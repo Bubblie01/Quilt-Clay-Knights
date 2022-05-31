@@ -1,25 +1,26 @@
 {
 	"schema_version": 1,
 	"quilt_loader": {
-		"group": "com.example",
-		"id": "example_mod",
+		"group": "io.github.Bubblie01",
+		"id": "terracotta_knights",
 		"version": "${version}",
 		"metadata": {
-			"name": "Mod Name",
+			"name": "Quilt-Terracotta-Knights",
 			"description": "A short description of your mod.",
 			"contributors": {
-				"Me!": "Owner"
+				"Bubblie01": "Owner"
 			},
 			"contact": {
 				"homepage": "https://example.com/",
 				"issues": "https://github.com/QuiltMC/quilt-template-mod/issues",
 				"sources": "https://github.com/QuiltMC/quilt-template-mod"
 			},
-			"icon": "assets/example_mod/icon.png"
+			"icon": "assets/terracotta_knights/icon.png"
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "com.example.example_mod.ExampleMod"
+			"init": "io.github.Bubblie01.terracotta_knights.Main",
+			"client_init": "io.github.Bubblie01.terracotta_knights.ClientInitializer"
 		},
 		"depends": [
 			{
@@ -36,5 +37,5 @@
 			}
 		]
 	},
-	"mixin": "example_mod.mixins.json"
+	"mixin": "terracotta_knights.mixins.json"
 }
