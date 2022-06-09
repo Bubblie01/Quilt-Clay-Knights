@@ -3,9 +3,7 @@ package io.github.Bubblie01.terracotta_knights;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.block.MapColor;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -14,11 +12,17 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.MobSpawnS2CPacket;
+import net.minecraft.screen.slot.Slot;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
@@ -38,7 +42,7 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	}
 
 	public static void registerClayKnightEntityAttributes() {
-		FabricDefaultAttributeRegistry.register(CLAY_KNIGHT, TerracottaKnightEntity.createMobAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.5f).add(EntityAttributes.GENERIC_FOLLOW_RANGE, 5.0f).add(EntityAttributes.GENERIC_ATTACK_SPEED, 4.0f).add(EntityAttributes.GENERIC_ATTACK_DAMAGE,  1.0f));
+		FabricDefaultAttributeRegistry.register(CLAY_KNIGHT, TerracottaKnightEntity.createMobAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.5f).add(EntityAttributes.GENERIC_FOLLOW_RANGE, 5.0f).add(EntityAttributes.GENERIC_ATTACK_SPEED, 4.0f).add(EntityAttributes.GENERIC_ATTACK_DAMAGE,  0.5f).add(EntityAttributes.GENERIC_MAX_HEALTH, 12f));
 	}
 
 	@Override
@@ -50,9 +54,48 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	}
 
 	@Override
+	public boolean canUseRangedWeapon(RangedWeaponItem weapon) {
+		return true;
+	}
+
+	@Override
+	protected void loot(ItemEntity item) {
+		if(item.getStack().getItem() == TerracottaRegistry.TINY_IRON_SWORD_ITEM) {
+			item.discard();
+			this.sendPickup(item,item.getStack().getCount());
+			this.equipStack(EquipmentSlot.MAINHAND,item.getStack());
+		}
+		super.loot(item);
+	}
+
+	@Override
+	public boolean canPickupItem(ItemStack stack) {
+		if(stack.getItem() instanceof TinySwordItem || stack.getItem() == Items.BOW) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+	}
+
+	@Override
+	public void tickMovement() {
+		this.tickHandSwing();
+		super.tickMovement();
+	}
+
+	@Override
+	public boolean canPickUpLoot() {
+		return true;
+	}
+
+	@Override
 	protected void initDataTracker() {
 		super.initDataTracker();
-		this.dataTracker.startTracking(COLOR, MapColor.BROWN.color);
+		this.dataTracker.startTracking(COLOR, 0);
 	}
 
 	public int getColor() {
@@ -84,13 +127,21 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 			dyeColor = ((DyeItem) dye.getItem()).getColor();
 			this.dataTracker.set(COLOR, (dyeColor.getMapColor().color));
 		}
+		this.swingHand(Hand.MAIN_HAND);
 		return super.interactMob(player, hand);
 	}
 
-	public void rangedAttack() {
-
+	public void rangedAttack(LivingEntity target, float pullProgress) {
+			ItemStack itemStack = this.getArrowType(this.getStackInHand(ProjectileUtil.getHandPossiblyHolding(this, Items.BOW)));
+			PersistentProjectileEntity persistentProjectileEntity = ProjectileUtil.createArrowProjectile(this,itemStack,pullProgress-50);
+			double d = target.getX() - this.getX();
+			double e = target.getBodyY(0.3333333333333333) - persistentProjectileEntity.getY();
+			double f = target.getZ() - this.getZ();
+			double g = Math.sqrt(d * d + f * f);
+			persistentProjectileEntity.setVelocity(d, e + g * 0.2F, f, 1.6F, (float)(14 - this.world.getDifficulty().getId() * 4));
+			this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.world.spawnEntity(persistentProjectileEntity);
 	}
-
 
 
 	@Override

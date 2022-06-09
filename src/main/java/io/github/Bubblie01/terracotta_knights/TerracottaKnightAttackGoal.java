@@ -1,9 +1,13 @@
 package io.github.Bubblie01.terracotta_knights;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.entity.projectile.ProjectileUtil;
+import net.minecraft.item.BowItem;
+import net.minecraft.item.Items;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
@@ -69,7 +73,10 @@ public class TerracottaKnightAttackGoal extends Goal{
 
 	}
 
-
+	@Override
+	public void start() {
+		knightEntity.setAttacking(true);
+	}
 
 	@Override
 	public void tick() {
@@ -80,16 +87,30 @@ public class TerracottaKnightAttackGoal extends Goal{
 				path = knightEntity.getNavigation().findPathTo(knightEntity.getTarget(), 0);
 				knightEntity.getLookControl().lookAt(knightEntity.getTarget());
 				knightEntity.getNavigation().startMovingAlong(path, 0.5f);
-				knightEntity.setAttacking(true);
 				if (knightEntity.squaredDistanceTo(knightEntity.getTarget()) <= this.getAttackDistance((PathAwareEntity) knightEntity.getTarget())) {
 					if (knightEntity.getVisibilityCache().canSee(knightEntity.getTarget())) {
 						knightEntity.tryAttack(knightEntity.getTarget());
 						knightEntity.swingHand(Hand.MAIN_HAND);
 					}
 				}
+				else if(knightEntity.isHolding(Items.BOW) && knightEntity.squaredDistanceTo(knightEntity.getTarget()) >= 15) {
+					knightEntity.setCurrentHand(ProjectileUtil.getHandPossiblyHolding(knightEntity, Items.BOW));
+					int useTime = knightEntity.getItemUseTime();
+					if (useTime >= 20) {
+						knightEntity.clearActiveItem();
+						System.out.println(useTime);
+						knightEntity.rangedAttack(knightEntity.getTarget(), BowItem.getPullProgress(useTime));
+
+					}
+				}
 		}
 
 		super.tick();
+	}
+
+	@Override
+	public void stop() {
+		knightEntity.setAttacking(false);
 	}
 
 	private double getAttackDistance(PathAwareEntity entity) {

@@ -9,5 +9,8 @@ public class TinySwordItem extends SwordItem {
 		super(toolMaterial, i, f, settings);
 	}
 
-
+	@Override
+	public float getAttackDamage() {
+		return 1.0F;
+	}
 }

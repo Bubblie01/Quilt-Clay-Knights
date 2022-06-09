@@ -26,8 +26,8 @@ public class TerracottaKnightItem extends Item implements DyeableItem {
 		BlockHitResult blockHitResult = (BlockHitResult)hitResult;
 		EntityType<?> terracottaType = TerracottaKnightEntity.CLAY_KNIGHT;
 		if(!world.isClient) {
-			TerracottaKnightEntity terracottaKnightEntity = (TerracottaKnightEntity) terracottaType.spawnFromItemStack((ServerWorld) world, itemStack, user, blockHitResult.getBlockPos(), SpawnReason.SPAWN_EGG, true, false);
-			terracottaKnightEntity.setColor(this.getColor(user.getStackInHand(hand)));
+			((TerracottaKnightEntity) terracottaType.spawnFromItemStack((ServerWorld) world, itemStack, user, blockHitResult.getBlockPos(), SpawnReason.SPAWN_EGG, true, false)).setColor(this.getColor(user.getStackInHand(hand)));
+
 		}
 		return super.use(world, user, hand);
 	}

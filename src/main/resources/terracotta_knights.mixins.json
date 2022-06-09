@@ -3,7 +3,10 @@
 	"minVersion": "0.8",
 	"package": "io.github.Bubblie01.terracotta_knights.mixin",
 	"compatibilityLevel": "JAVA_17",
-	"mixins": [],
+	"mixins": [
+      "ItemRendererMixin",
+      "ItemEntityRendererMixin"
+    ],
 	"client": [
       "TitleScreenMixin"
 	],
