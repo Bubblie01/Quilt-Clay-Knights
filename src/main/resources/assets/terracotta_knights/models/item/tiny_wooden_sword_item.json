@@ -1,0 +1,7 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "terracotta_knights:items/tiny_wooden_sword_item"
+  }
+
+}

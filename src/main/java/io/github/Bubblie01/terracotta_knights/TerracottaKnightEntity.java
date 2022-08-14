@@ -7,11 +7,13 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.inventory.SimpleInventory;
@@ -22,6 +24,7 @@ import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.MobSpawnS2CPacket;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
@@ -30,9 +33,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class TerracottaKnightEntity extends PathAwareEntity {
-	public static final EntityType<TerracottaKnightEntity> CLAY_KNIGHT = Registry.register(Registry.ENTITY_TYPE, new Identifier("clay_knights", "clay_knight_entity"),FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, TerracottaKnightEntity::new).dimensions(EntityDimensions.changing(0.5F, 1.0F)).build());
+	public static final EntityType<TerracottaKnightEntity> TERRACOTTA_KNIGHT = Registry.register(Registry.ENTITY_TYPE, new Identifier(Main.MOD_ID, "terracotta_knight_entity"),FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, TerracottaKnightEntity::new).dimensions(EntityDimensions.changing(0.5F, 1.0F)).build());
 	public static final TrackedData<Integer> COLOR = DataTracker.registerData(TerracottaKnightEntity.class, TrackedDataHandlerRegistry.INTEGER);
 	public static final TrackedData<BlockPos> POS = DataTracker.registerData(TerracottaKnightEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
 	public static final SimpleInventory terracottaKnightInventory = new SimpleInventory(5);
@@ -42,7 +46,7 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	}
 
 	public static void registerClayKnightEntityAttributes() {
-		FabricDefaultAttributeRegistry.register(CLAY_KNIGHT, TerracottaKnightEntity.createMobAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.5f).add(EntityAttributes.GENERIC_FOLLOW_RANGE, 5.0f).add(EntityAttributes.GENERIC_ATTACK_SPEED, 4.0f).add(EntityAttributes.GENERIC_ATTACK_DAMAGE,  0.5f).add(EntityAttributes.GENERIC_MAX_HEALTH, 12f));
+		FabricDefaultAttributeRegistry.register(TERRACOTTA_KNIGHT, TerracottaKnightEntity.createMobAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.5f).add(EntityAttributes.GENERIC_FOLLOW_RANGE, 5.0f).add(EntityAttributes.GENERIC_ATTACK_SPEED, 4.0f).add(EntityAttributes.GENERIC_ATTACK_DAMAGE,  0.5f).add(EntityAttributes.GENERIC_MAX_HEALTH, 12f));
 	}
 
 	@Override
@@ -60,7 +64,7 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 
 	@Override
 	protected void loot(ItemEntity item) {
-		if(item.getStack().getItem() == TerracottaRegistry.TINY_IRON_SWORD_ITEM) {
+		if(item.getStack().getItem() instanceof TinySwordItem || item.getStack().getItem() == TerracottaRegistry.TINY_BOW_ITEM) {
 			item.discard();
 			this.sendPickup(item,item.getStack().getCount());
 			this.equipStack(EquipmentSlot.MAINHAND,item.getStack());
@@ -68,9 +72,21 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 		super.loot(item);
 	}
 
+	@Nullable
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return SoundEvents.BLOCK_STONE_PLACE;
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TerracottaRegistry.SOUL_WHISPER_SOUND_EVENT;
+	}
+
 	@Override
 	public boolean canPickupItem(ItemStack stack) {
-		if(stack.getItem() instanceof TinySwordItem || stack.getItem() == Items.BOW) {
+		if(stack.getItem() instanceof TinySwordItem || stack.getItem() == TerracottaRegistry.TINY_BOW_ITEM) {
 			return true;
 		}
 		return false;
@@ -133,9 +149,10 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 
 	public void rangedAttack(LivingEntity target, float pullProgress) {
 			ItemStack itemStack = this.getArrowType(this.getStackInHand(ProjectileUtil.getHandPossiblyHolding(this, Items.BOW)));
-			PersistentProjectileEntity persistentProjectileEntity = ProjectileUtil.createArrowProjectile(this,itemStack,pullProgress-50);
+			PersistentProjectileEntity persistentProjectileEntity = TinyArrowEntity.createArrowProjectile(this,itemStack,pullProgress-50);
+
 			double d = target.getX() - this.getX();
-			double e = target.getBodyY(0.3333333333333333) - persistentProjectileEntity.getY();
+			double e = target.getBodyY(0.1) - persistentProjectileEntity.getY();
 			double f = target.getZ() - this.getZ();
 			double g = Math.sqrt(d * d + f * f);
 			persistentProjectileEntity.setVelocity(d, e + g * 0.2F, f, 1.6F, (float)(14 - this.world.getDifficulty().getId() * 4));

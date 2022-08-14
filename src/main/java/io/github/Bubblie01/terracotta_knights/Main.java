@@ -15,5 +15,6 @@ public class Main implements ModInitializer {
 		TerracottaRegistry.registerItems();
 		TerracottaRegistry.registerRecipies();
 		TerracottaRegistry.registerColors();
+		TerracottaRegistry.registerSounds();
 	}
 }

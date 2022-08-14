@@ -10,13 +10,17 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Quaternion;
+import org.jetbrains.annotations.Nullable;
 
 public class TerracottaKnightEntityRenderer extends BipedEntityRenderer<TerracottaKnightEntity, TerracottaKnightEntityModel<TerracottaKnightEntity>> {
+	private Identifier textureIdentifier = new Identifier(Main.MOD_ID, "textures/entities/terracotta_knight.png");
+	private String leocthChecker = "";
 	public TerracottaKnightEntityRenderer(EntityRendererFactory.Context context) {
 		super(context, new TerracottaKnightEntityModel(context.getPart(EntityModelLayers.PLAYER), false), 0.5f);
 	}
@@ -28,8 +32,23 @@ public class TerracottaKnightEntityRenderer extends BipedEntityRenderer<Terracot
 		super.scale(entity, matrices, amount);
 	}
 
+	@Nullable
+	@Override
+	protected RenderLayer getRenderLayer(TerracottaKnightEntity entity, boolean showBody, boolean translucent, boolean showOutline) {
+		return super.getRenderLayer(entity, showBody, translucent, showOutline);
+	}
+
 	@Override
 	public void render(TerracottaKnightEntity mobEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+		if(mobEntity.hasCustomName()) {
+			if (mobEntity.getCustomName().equals(Text.of("leocth"))) {
+				textureIdentifier = new Identifier(Main.MOD_ID, "textures/entities/leocth.png");
+			}
+		}
+		else {
+			textureIdentifier =	new Identifier(Main.MOD_ID, "textures/entities/terracotta_knight.png");
+		}
+
 		int color = mobEntity.getDataTracker().get(TerracottaKnightEntity.COLOR);
 		float RGBColors[] = new float[3];
 		RGBColors[0] = (float)(color >> 16 & 0xFF) / 255.0F;
@@ -38,7 +57,7 @@ public class TerracottaKnightEntityRenderer extends BipedEntityRenderer<Terracot
 
 		VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(this.getModel().getLayer(this.getTexture(mobEntity)));
 		model.setColors(RGBColors[0],RGBColors[1], RGBColors[2]);
-
+		leocthChecker = " ";
 		super.render(mobEntity, f, g, matrixStack, vertexConsumerProvider, i);
 
 	}
@@ -47,6 +66,6 @@ public class TerracottaKnightEntityRenderer extends BipedEntityRenderer<Terracot
 
 	@Override
 	public Identifier getTexture(TerracottaKnightEntity mobEntity) {
-		return new Identifier(Main.MOD_ID, "textures/entities/terracotta_knight.png");
+		return textureIdentifier;
 	}
 }

@@ -1,0 +1,12 @@
+{
+  "signal_sound": {
+    "sounds": [
+      "terracotta_knights:signal_sound"
+    ]
+  },
+  "soul_whisper": {
+    "sounds": [
+      "terracotta_knights:soul_whisper"
+    ]
+  }
+}

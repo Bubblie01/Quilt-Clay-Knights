@@ -13,6 +13,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
+import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
 public class TerracottaKnightItem extends Item implements DyeableItem {
 	public TerracottaKnightItem(Settings settings) {
@@ -24,7 +25,8 @@ public class TerracottaKnightItem extends Item implements DyeableItem {
 		ItemStack itemStack = user.getStackInHand(hand);
 		HitResult hitResult = raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
 		BlockHitResult blockHitResult = (BlockHitResult)hitResult;
-		EntityType<?> terracottaType = TerracottaKnightEntity.CLAY_KNIGHT;
+		EntityType<?> terracottaType = TerracottaKnightEntity.TERRACOTTA_KNIGHT;
+		TerracottaKnightEntity knight = (TerracottaKnightEntity) terracottaType.create(world);
 		if(!world.isClient) {
 			((TerracottaKnightEntity) terracottaType.spawnFromItemStack((ServerWorld) world, itemStack, user, blockHitResult.getBlockPos(), SpawnReason.SPAWN_EGG, true, false)).setColor(this.getColor(user.getStackInHand(hand)));
 

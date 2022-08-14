@@ -2,6 +2,7 @@ package io.github.Bubblie01.terracotta_knights;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.mob.PathAwareEntity;
@@ -42,8 +43,8 @@ public class TerracottaKnightAttackGoal extends Goal{
 		for(int i = 0; i<entityList.size(); i++) {
 			Entity entity = entityList.get(i);
 			if(entity instanceof TerracottaKnightEntity) {
-				int color = entity.getDataTracker().get(TerracottaKnightEntity.COLOR);
-				if(color != knightEntity.getDataTracker().get(TerracottaKnightEntity.COLOR)) {
+				int color = ((TerracottaKnightEntity) entity).getColor();
+				if(color != knightEntity.getColor()) {
 					enemyList.add((TerracottaKnightEntity) entity);
 				}
 				else {
@@ -59,8 +60,8 @@ public class TerracottaKnightAttackGoal extends Goal{
 
 			}
 			else {
-				int knightColor =knightEntity.getDataTracker().get(TerracottaKnightEntity.COLOR);
-				int enemyColor = knightEntity.getTarget().getDataTracker().get(TerracottaKnightEntity.COLOR);
+				int knightColor = knightEntity.getColor();
+				int enemyColor = knightEntity.getColor();
 				if(enemyColor == knightColor) {
 					knightEntity.setTarget(null);
 				}
@@ -93,8 +94,8 @@ public class TerracottaKnightAttackGoal extends Goal{
 						knightEntity.swingHand(Hand.MAIN_HAND);
 					}
 				}
-				else if(knightEntity.isHolding(Items.BOW) && knightEntity.squaredDistanceTo(knightEntity.getTarget()) >= 15) {
-					knightEntity.setCurrentHand(ProjectileUtil.getHandPossiblyHolding(knightEntity, Items.BOW));
+				else if(knightEntity.isHolding(TerracottaRegistry.TINY_BOW_ITEM) && knightEntity.squaredDistanceTo(knightEntity.getTarget()) >= 15) {
+					knightEntity.setCurrentHand(ProjectileUtil.getHandPossiblyHolding(knightEntity, TerracottaRegistry.TINY_BOW_ITEM));
 					int useTime = knightEntity.getItemUseTime();
 					if (useTime >= 20) {
 						knightEntity.clearActiveItem();
