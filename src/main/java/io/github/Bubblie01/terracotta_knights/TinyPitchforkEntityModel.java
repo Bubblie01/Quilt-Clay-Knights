@@ -3,9 +3,9 @@ package io.github.Bubblie01.terracotta_knights;// Made with Blockbench 4.2.5
 // Paste this class into your mod and generate all required imports
 
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;

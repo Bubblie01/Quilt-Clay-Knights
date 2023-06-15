@@ -2,6 +2,7 @@ package io.github.Bubblie01.terracotta_knights;
 
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.sound.SoundEvent;
@@ -23,6 +24,21 @@ public class TerracottaRegistry {
 	public static final SignalDeviceItem SIGNAL_DEVICE_ITEM = new SignalDeviceItem(new Item.Settings().group(ItemGroup.MISC));
 	public static final TinyPitchforkItem TINY_PITCHFORK_ITEM = new TinyPitchforkItem(new Item.Settings().group(ItemGroup.COMBAT));
 
+	public static final Item TINY_IRON_HELMET = new TinyArmorItem(TinyArmorMaterial.TINY_IRON, EquipmentSlot.HEAD, new Item.Settings().group(ItemGroup.COMBAT));
+	public static final Item TINY_IRON_CHESTPLATE = new TinyArmorItem(TinyArmorMaterial.TINY_IRON, EquipmentSlot.CHEST, new Item.Settings().group(ItemGroup.COMBAT));
+	public static final Item TINY_IRON_LEGGINGS = new TinyArmorItem(TinyArmorMaterial.TINY_IRON, EquipmentSlot.LEGS, new Item.Settings().group(ItemGroup.COMBAT));
+	public static final Item TINY_IRON_BOOTS = new TinyArmorItem(TinyArmorMaterial.TINY_IRON, EquipmentSlot.FEET, new Item.Settings().group(ItemGroup.COMBAT));
+
+	public static final Item TINY_GOLD_HELMET = new TinyArmorItem(TinyArmorMaterial.TINY_GOLD, EquipmentSlot.HEAD, new Item.Settings().group(ItemGroup.COMBAT));
+	public static final Item TINY_GOLD_CHESTPLATE = new TinyArmorItem(TinyArmorMaterial.TINY_GOLD, EquipmentSlot.CHEST, new Item.Settings().group(ItemGroup.COMBAT));
+	public static final Item TINY_GOLD_LEGGINGS = new TinyArmorItem(TinyArmorMaterial.TINY_GOLD, EquipmentSlot.LEGS, new Item.Settings().group(ItemGroup.COMBAT));
+	public static final Item TINY_GOLD_BOOTS = new TinyArmorItem(TinyArmorMaterial.TINY_GOLD, EquipmentSlot.FEET, new Item.Settings().group(ItemGroup.COMBAT));
+
+	public static final Item TINY_DIAMOND_HELMET = new TinyArmorItem(TinyArmorMaterial.TINY_DIAMOND, EquipmentSlot.HEAD, new Item.Settings().group(ItemGroup.COMBAT));
+	public static final Item TINY_DIAMOND_CHESTPLATE = new TinyArmorItem(TinyArmorMaterial.TINY_DIAMOND, EquipmentSlot.CHEST, new Item.Settings().group(ItemGroup.COMBAT));
+	public static final Item TINY_DIAMOND_LEGGINGS = new TinyArmorItem(TinyArmorMaterial.TINY_DIAMOND, EquipmentSlot.LEGS, new Item.Settings().group(ItemGroup.COMBAT));
+	public static final Item TINY_DIAMOND_BOOTS = new TinyArmorItem(TinyArmorMaterial.TINY_DIAMOND, EquipmentSlot.FEET, new Item.Settings().group(ItemGroup.COMBAT));
+
 	//recipies
 	public static SpecialRecipeSerializer<TerracottaKnightRecipe> TERRACOTTA_KNIGHT_RECIPE;
 
@@ -37,16 +53,35 @@ public class TerracottaRegistry {
 
 	public static void registerItems() {
 		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "terracotta_knight"), TERRACOTTA_KNIGHT_ITEM);
+
 		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_wooden_sword_item"), TINY_WOODEN_SWORD_ITEM);
 		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_stone_sword_item"), TINY_STONE_SWORD_ITEM);
 		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_iron_sword_item"), TINY_IRON_SWORD_ITEM);
 		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_gold_sword_item"), TINY_GOLD_SWORD_ITEM);
 		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_diamond_sword_item"), TINY_DIAMOND_SWORD_ITEM);
 		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_netherite_sword_item"), TINY_NETHERITE_SWORD_ITEM);
+
 		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_bow"), TINY_BOW_ITEM);
 		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "signal_device_item"), SIGNAL_DEVICE_ITEM);
 		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_arrow"), TINY_ARROW_ITEM);
+
 		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_diamond_pitchfork_item"), TINY_PITCHFORK_ITEM);
+
+		//Iron Armor
+		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_iron_helmet"), TINY_IRON_HELMET);
+		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_iron_chestplate"), TINY_IRON_CHESTPLATE);
+		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_iron_leggings"), TINY_IRON_LEGGINGS);
+		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_iron_boots"), TINY_IRON_BOOTS);
+		//Gold Armor
+		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_gold_helmet"), TINY_GOLD_HELMET);
+		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_gold_chestplate"), TINY_GOLD_CHESTPLATE);
+		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_gold_leggings"), TINY_GOLD_LEGGINGS);
+		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_gold_boots"), TINY_GOLD_BOOTS);
+		//Diamond Armor
+		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_diamond_helmet"), TINY_DIAMOND_HELMET);
+		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_diamond_chestplate"), TINY_DIAMOND_CHESTPLATE);
+		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_diamond_leggings"), TINY_DIAMOND_LEGGINGS);
+		Registry.register(Registry.ITEM, new Identifier(Main.MOD_ID, "tiny_diamond_boots"), TINY_DIAMOND_BOOTS);
 
 	}
 

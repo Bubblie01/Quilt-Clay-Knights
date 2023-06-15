@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -20,7 +21,7 @@ public class ClientInitializer implements ClientModInitializer {
 	public void onInitializeClient(ModContainer mod) {
 
 		EntityRendererRegistry.register(TerracottaKnightEntity.TERRACOTTA_KNIGHT, ((context -> {
-			return new TerracottaKnightEntityRenderer(context);
+			return new TerracottaKnightEntityRenderer(context, EntityModelLayers.PLAYER_INNER_ARMOR, EntityModelLayers.PLAYER_OUTER_ARMOR);
 		})));
 		ModelPredicateProviderRegistry.register(TerracottaRegistry.TINY_BOW_ITEM, new Identifier("pulling"),(stack, world, entity, seed) -> entity != null && entity.isUsingItem() && entity.getActiveItem() == stack ? 1.0F : 0.0F);
 

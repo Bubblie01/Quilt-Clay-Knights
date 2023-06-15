@@ -22,7 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.packet.s2c.play.MobSpawnS2CPacket;
+import net.minecraft.network.Packet;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -34,9 +34,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
+import org.quiltmc.qsl.entity.impl.QuiltEntityType;
 
 public class TerracottaKnightEntity extends PathAwareEntity {
-	public static final EntityType<TerracottaKnightEntity> TERRACOTTA_KNIGHT = Registry.register(Registry.ENTITY_TYPE, new Identifier(Main.MOD_ID, "terracotta_knight_entity"),FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, TerracottaKnightEntity::new).dimensions(EntityDimensions.changing(0.5F, 1.0F)).build());
+	//public static final EntityType<TerracottaKnightEntity> TERRACOTTA_KNIGHT = Registry.register(Registry.ENTITY_TYPE, new Identifier(Main.MOD_ID, "terracotta_knight_entity"),FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, TerracottaKnightEntity::new).dimensions(EntityDimensions.changing(0.5F, 1.2F)).build());
+	public static final EntityType<TerracottaKnightEntity> TERRACOTTA_KNIGHT = Registry.register(Registry.ENTITY_TYPE, new Identifier(Main.MOD_ID), QuiltEntityTypeBuilder.create(SpawnGroup.MONSTER, TerracottaKnightEntity::new).setDimensions(EntityDimensions.changing(0.5f,1.2f)).build());
 	public static final TrackedData<Integer> COLOR = DataTracker.registerData(TerracottaKnightEntity.class, TrackedDataHandlerRegistry.INTEGER);
 	public static final TrackedData<BlockPos> POS = DataTracker.registerData(TerracottaKnightEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
 	public static final SimpleInventory terracottaKnightInventory = new SimpleInventory(5);
@@ -76,12 +79,6 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
 		return SoundEvents.BLOCK_STONE_PLACE;
-	}
-
-	@Nullable
-	@Override
-	protected SoundEvent getAmbientSound() {
-		return TerracottaRegistry.SOUL_WHISPER_SOUND_EVENT;
 	}
 
 	@Override
@@ -138,32 +135,40 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 
 	@Override
 	protected ActionResult interactMob(PlayerEntity player, Hand hand) {
-		ItemStack dye = player.getStackInHand(hand);
-		if(dye.getItem() instanceof DyeItem) {
-			dyeColor = ((DyeItem) dye.getItem()).getColor();
+		ItemStack item = player.getStackInHand(hand);
+		if(item.getItem() instanceof DyeItem) {
+			dyeColor = ((DyeItem) item.getItem()).getColor();
 			this.dataTracker.set(COLOR, (dyeColor.getMapColor().color));
 		}
+
+		if(item.getItem() instanceof TinySwordItem) {
+			this.equipStack(EquipmentSlot.MAINHAND, item);
+		}
+
+		if(item.getItem() instanceof TinyArmorItem) {
+			this.equipStack(((TinyArmorItem) item.getItem()).getSlotType(), item);
+		}
+
 		this.swingHand(Hand.MAIN_HAND);
 		return super.interactMob(player, hand);
 	}
 
 	public void rangedAttack(LivingEntity target, float pullProgress) {
 			ItemStack itemStack = this.getArrowType(this.getStackInHand(ProjectileUtil.getHandPossiblyHolding(this, Items.BOW)));
-			PersistentProjectileEntity persistentProjectileEntity = TinyArrowEntity.createArrowProjectile(this,itemStack,pullProgress-50);
+			PersistentProjectileEntity persistentProjectileEntity = TinyArrowEntity.createArrowProjectile(this,itemStack,pullProgress);
 
 			double d = target.getX() - this.getX();
 			double e = target.getBodyY(0.1) - persistentProjectileEntity.getY();
 			double f = target.getZ() - this.getZ();
 			double g = Math.sqrt(d * d + f * f);
-			persistentProjectileEntity.setVelocity(d, e + g * 0.2F, f, 1.6F, (float)(14 - this.world.getDifficulty().getId() * 4));
+			persistentProjectileEntity.setVelocity(d, e + g * 0.2F, f, 1.6F, 0);
 			this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 			this.world.spawnEntity(persistentProjectileEntity);
 	}
 
 
 	@Override
-	public void readFromPacket(MobSpawnS2CPacket packet) {
-
-		super.readFromPacket(packet);
+	public Packet<?> createSpawnPacket() {
+		return super.createSpawnPacket();
 	}
 }

@@ -1,13 +1,15 @@
 package io.github.Bubblie01.terracotta_knights;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.CrossbowPosing;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.item.Items;
 import net.minecraft.util.Arm;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 
 public class TerracottaKnightEntityModel<T extends PathAwareEntity> extends PlayerEntityModel<TerracottaKnightEntity> {
@@ -39,6 +41,21 @@ public class TerracottaKnightEntityModel<T extends PathAwareEntity> extends Play
 		}
 	}
 
+	@Override
+	public void animateModel(TerracottaKnightEntity knight, float f, float g, float h) {
+		this.rightArmPose = BipedEntityModel.ArmPose.EMPTY;
+		this.leftArmPose = BipedEntityModel.ArmPose.EMPTY;
+		if (knight.getMainHandStack().isOf(TerracottaRegistry.TINY_BOW_ITEM)) {
+			if (knight.getMainArm() == Arm.RIGHT) {
+				this.rightArmPose = BipedEntityModel.ArmPose.BOW_AND_ARROW;
+			} else {
+				this.leftArmPose = BipedEntityModel.ArmPose.BOW_AND_ARROW;
+			}
+		}
+
+		super.animateModel(knight, f, g, h);
+
+	}
 	@Override
 	public void setArmAngle(Arm arm, MatrixStack matrices) {
 		ModelPart modelPart = this.getArm(arm);

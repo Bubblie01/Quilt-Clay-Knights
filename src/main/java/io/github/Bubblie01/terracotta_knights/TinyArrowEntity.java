@@ -2,8 +2,10 @@ package io.github.Bubblie01.terracotta_knights;
 
 import io.github.Bubblie01.terracotta_knights.mixin.EntityTypeAccessor;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.entity.*;
-import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnGroup;
+import net.minecraft.world.entity.*;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ArrowItem;
@@ -13,13 +15,17 @@ import net.minecraft.potion.Potions;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
+import org.quiltmc.qsl.entity.impl.QuiltEntityType;
 
 import static io.github.Bubblie01.terracotta_knights.TerracottaRegistry.TINY_ARROW_ITEM;
 
 public class TinyArrowEntity extends PersistentProjectileEntity {
-	public static final EntityType<TinyArrowEntity> TINY_ARROW = EntityTypeAccessor.callRegister("tiny_arrow", EntityType.Builder.create(TinyArrowEntity::new,SpawnGroup.MISC));
+	public static final EntityType<TinyArrowEntity> TINY_ARROW = EntityTypeAccessor.callRegister("tiny_arrow", EntityType.Builder.create(TinyArrowEntity::new, SpawnGroup.MISC));
 
-	protected TinyArrowEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
+	//public static final EntityType<TinyArrowEntity> TINY_ARROW = QuiltEntityTypeBuilder.create(SpawnGroup.MISC, TinyArrowEntity::new).build();
+
+	public TinyArrowEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
 	}
 

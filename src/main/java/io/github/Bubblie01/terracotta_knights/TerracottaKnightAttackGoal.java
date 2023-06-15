@@ -28,6 +28,10 @@ public class TerracottaKnightAttackGoal extends Goal{
 	private Box searchBox;
 	private float searchRange;
 	private float attackRange;
+
+	private boolean sideways;
+
+	private boolean backwards = false;
 	public TerracottaKnightAttackGoal(TerracottaKnightEntity knightEntity, float searchRange, float attackRange) {
 		this.knightEntity = knightEntity;
 		this.searchRange = searchRange;
@@ -84,27 +88,38 @@ public class TerracottaKnightAttackGoal extends Goal{
 		if(knightEntity.getAttacker() instanceof TerracottaKnightEntity && knightEntity.getColor() != ((TerracottaKnightEntity) knightEntity.getAttacker()).getColor() && knightEntity.getAttacker() != null) {
 			knightEntity.setTarget(knightEntity.getAttacker());
 		}
-		if(knightEntity.getTarget() !=null) {
+		if(knightEntity.getTarget() != null && knightEntity.getVisibilityCache().canSee(knightEntity.getTarget())) {
 				path = knightEntity.getNavigation().findPathTo(knightEntity.getTarget(), 0);
-				knightEntity.getLookControl().lookAt(knightEntity.getTarget());
-				knightEntity.getNavigation().startMovingAlong(path, 0.5f);
+				//knightEntity.getLookControl().lookAt(knightEntity.getTarget());
+				//knightEntity.getNavigation().startMovingAlong(path, 0.5f);
 				if (knightEntity.squaredDistanceTo(knightEntity.getTarget()) <= this.getAttackDistance((PathAwareEntity) knightEntity.getTarget())) {
 					if (knightEntity.getVisibilityCache().canSee(knightEntity.getTarget())) {
 						knightEntity.tryAttack(knightEntity.getTarget());
 						knightEntity.swingHand(Hand.MAIN_HAND);
 					}
-				}
-				else if(knightEntity.isHolding(TerracottaRegistry.TINY_BOW_ITEM) && knightEntity.squaredDistanceTo(knightEntity.getTarget()) >= 15) {
-					knightEntity.setCurrentHand(ProjectileUtil.getHandPossiblyHolding(knightEntity, TerracottaRegistry.TINY_BOW_ITEM));
-					int useTime = knightEntity.getItemUseTime();
-					if (useTime >= 20) {
-						knightEntity.clearActiveItem();
-						System.out.println(useTime);
-						knightEntity.rangedAttack(knightEntity.getTarget(), BowItem.getPullProgress(useTime));
+				} else if (knightEntity.isHolding(TerracottaRegistry.TINY_BOW_ITEM)) {
+					if (knightEntity.squaredDistanceTo(knightEntity.getTarget()) >= 10) {
+						knightEntity.setCurrentHand(ProjectileUtil.getHandPossiblyHolding(knightEntity, TerracottaRegistry.TINY_BOW_ITEM));
+						int useTime = knightEntity.getItemUseTime();
+						if (useTime >= 20) {
+							knightEntity.clearActiveItem();
+							System.out.println(useTime);
+							knightEntity.rangedAttack(knightEntity.getTarget(), BowItem.getPullProgress(useTime));
+						}
+						System.out.println("Far!!!");
+						knightEntity.getMoveControl().strafeTo(0.5f, 0.5f);
+						knightEntity.lookAtEntity(knightEntity.getTarget(), 30.0F, 30.0F);
 
+					} else if (knightEntity.squaredDistanceTo(knightEntity.getTarget()) <= 5) {
+						System.out.println("Close!!!");
+						knightEntity.getMoveControl().strafeTo(-0.5f, -0.5f);
+						knightEntity.lookAtEntity(knightEntity.getTarget(), 30.0F, 30.0F);
 					}
+				} else {
+					knightEntity.getLookControl().lookAt(knightEntity.getTarget());
+					knightEntity.getNavigation().startMovingAlong(path, 0.5f);
 				}
-		}
+			}
 
 		super.tick();
 	}
