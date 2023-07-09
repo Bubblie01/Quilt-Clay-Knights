@@ -1,7 +1,7 @@
 package io.github.Bubblie01.terracotta_knights;
 
+import io.github.Bubblie01.terracotta_knights.entities.TinyArrowEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.ArrowEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;

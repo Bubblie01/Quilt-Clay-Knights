@@ -6,7 +6,7 @@ import net.minecraft.item.ArmorMaterial;
 
 public class TinyArmorItem extends ArmorItem {
 
-	public TinyArmorItem(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
+	public TinyArmorItem(ArmorMaterial material, ArmorSlot slot, Settings settings) {
 		super(material, slot, settings);
 	}
 }

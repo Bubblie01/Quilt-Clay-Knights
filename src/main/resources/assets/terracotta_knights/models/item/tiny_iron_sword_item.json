@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "terracotta_knights:items/tiny_iron_sword_item"
+    "layer0": "terracotta_knights:item/tiny_iron_sword_item"
   },
   "display": {
     "thirdperson_righthand": {

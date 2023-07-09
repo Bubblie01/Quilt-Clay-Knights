@@ -2,12 +2,15 @@ package io.github.Bubblie01.terracotta_knights;
 
 import com.google.common.collect.Lists;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.DyeableItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.CraftingCategory;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
@@ -15,12 +18,12 @@ import java.util.List;
 
 public class TerracottaKnightRecipe extends SpecialCraftingRecipe {
 
-	public TerracottaKnightRecipe(Identifier identifier) {
-		super(identifier);
+	public TerracottaKnightRecipe(Identifier identifier, CraftingCategory craftingCategory) {
+		super(identifier, craftingCategory);
 	}
 
 	@Override
-	public boolean matches(CraftingInventory inventory, World world) {
+	public boolean matches(RecipeInputInventory inventory, World world) {
 		ItemStack itemStack = ItemStack.EMPTY;
 		List<ItemStack> list = Lists.<ItemStack>newArrayList();
 
@@ -47,7 +50,7 @@ public class TerracottaKnightRecipe extends SpecialCraftingRecipe {
 	}
 
 	@Override
-	public ItemStack craft(CraftingInventory inventory) {
+	public ItemStack craft(RecipeInputInventory inventory, DynamicRegistryManager registryManager) {
 		List<DyeItem> list = Lists.<DyeItem>newArrayList();
 		ItemStack itemStack = ItemStack.EMPTY;
 
@@ -72,6 +75,7 @@ public class TerracottaKnightRecipe extends SpecialCraftingRecipe {
 		}
 		return !itemStack.isEmpty() && !list.isEmpty() ? DyeableItem.blendAndSetColor(itemStack, list) : ItemStack.EMPTY;
 	}
+
 
 	@Override
 	public boolean fits(int width, int height) {

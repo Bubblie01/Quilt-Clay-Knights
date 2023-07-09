@@ -2,7 +2,7 @@
   "credit": "Made by Harpsi",
   "texture_size": [16, 18],
   "textures": {
-    "0": "terracotta_knights:items/tiny_diamond_pitchfork_model_texture"
+    "0": "terracotta_knights:item/tiny_diamond_pitchfork_model_texture"
   },
   "elements": [
     {

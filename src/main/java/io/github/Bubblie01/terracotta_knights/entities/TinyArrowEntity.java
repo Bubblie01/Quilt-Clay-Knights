@@ -1,45 +1,40 @@
-package io.github.Bubblie01.terracotta_knights;
+package io.github.Bubblie01.terracotta_knights.entities;
 
-import io.github.Bubblie01.terracotta_knights.mixin.EntityTypeAccessor;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import io.github.Bubblie01.terracotta_knights.Main;
+import io.github.Bubblie01.terracotta_knights.TinyArrowItem;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.world.entity.*;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ArrowItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.potion.Potions;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
-import org.quiltmc.qsl.entity.impl.QuiltEntityType;
 
 import static io.github.Bubblie01.terracotta_knights.TerracottaRegistry.TINY_ARROW_ITEM;
 
 public class TinyArrowEntity extends PersistentProjectileEntity {
-	public static final EntityType<TinyArrowEntity> TINY_ARROW = EntityTypeAccessor.callRegister("tiny_arrow", EntityType.Builder.create(TinyArrowEntity::new, SpawnGroup.MISC));
+	//public static final EntityType<TinyArrowEntity> TINY_ARROW = EntityTypeAccessor.callRegister("tiny_arrow", EntityType.Builder.create(TinyArrowEntity::new, SpawnGroup.MISC));
 
-	//public static final EntityType<TinyArrowEntity> TINY_ARROW = QuiltEntityTypeBuilder.create(SpawnGroup.MISC, TinyArrowEntity::new).build();
+	public static final EntityType<TinyArrowEntity> TINY_ARROW = Registry.register(Registries.ENTITY_TYPE, new Identifier(Main.MOD_ID, "tiny_arrow_entity"),QuiltEntityTypeBuilder.<TinyArrowEntity>create(SpawnGroup.MISC, TinyArrowEntity::new).build());
 
 	public TinyArrowEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
-	protected TinyArrowEntity(EntityType<? extends PersistentProjectileEntity> entityType, double d, double e, double f, World world) {
+	public TinyArrowEntity(EntityType<? extends PersistentProjectileEntity> entityType, double d, double e, double f, World world) {
 		super(entityType, d, e, f, world);
 	}
 
-	protected TinyArrowEntity(EntityType<? extends PersistentProjectileEntity> entityType, LivingEntity livingEntity, World world) {
+	public TinyArrowEntity(EntityType<? extends PersistentProjectileEntity> entityType, LivingEntity livingEntity, World world) {
 		super(entityType, livingEntity, world);
 	}
 
 	public static PersistentProjectileEntity createArrowProjectile(LivingEntity entity, ItemStack stack, float damageModifier) {
 		TinyArrowItem arrowItem = (TinyArrowItem) (stack.getItem() instanceof TinyArrowItem ? stack.getItem() : TINY_ARROW_ITEM);
-		PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(entity.world, stack, entity);
+		PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(entity.getWorld(), stack, entity);
 		persistentProjectileEntity.applyEnchantmentEffects(entity, damageModifier);
 		return persistentProjectileEntity;
 	}

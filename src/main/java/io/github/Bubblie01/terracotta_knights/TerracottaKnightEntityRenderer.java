@@ -1,7 +1,7 @@
 package io.github.Bubblie01.terracotta_knights;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.block.MapColor;
+import io.github.Bubblie01.terracotta_knights.entities.TerracottaKnightEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.BipedEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -10,15 +10,8 @@ import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.CrossbowItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.text.Text;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.UseAction;
-import net.minecraft.util.math.Quaternion;
 import org.jetbrains.annotations.Nullable;
 
 public class TerracottaKnightEntityRenderer extends BipedEntityRenderer<TerracottaKnightEntity, TerracottaKnightEntityModel<TerracottaKnightEntity>> {
@@ -26,7 +19,7 @@ public class TerracottaKnightEntityRenderer extends BipedEntityRenderer<Terracot
 	private String leocthChecker = "";
 	public TerracottaKnightEntityRenderer(EntityRendererFactory.Context context, EntityModelLayer innerArmorLayer, EntityModelLayer outerArmorLayer) {
 		super(context, new TerracottaKnightEntityModel(context.getPart(EntityModelLayers.PLAYER), false), 0.3f);
-		this.addFeature(new ArmorFeatureRenderer(this, new BipedEntityModel(context.getPart(innerArmorLayer)), new BipedEntityModel(context.getPart(outerArmorLayer))));
+		this.addFeature(new ArmorFeatureRenderer(this, new BipedEntityModel(context.getPart(innerArmorLayer)), new BipedEntityModel(context.getPart(outerArmorLayer)), context.getModelManager()));
 	}
 
 

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "terracotta_knights:items/tiny_diamond_pitchfork_item"
+    "layer0": "terracotta_knights:item/tiny_diamond_pitchfork_item"
   }
 }

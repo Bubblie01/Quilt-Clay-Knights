@@ -1,6 +1,6 @@
 {
     "parent": "item/bow",
     "textures": {
-        "layer0": "terracotta_knights:items/tiny_bow_pulling_0"
+        "layer0": "terracotta_knights:item/tiny_bow_pulling_0"
     }
 }

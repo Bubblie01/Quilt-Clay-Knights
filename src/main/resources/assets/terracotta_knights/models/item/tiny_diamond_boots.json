@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "terracotta_knights:items/tiny_diamond_boots"
+    "layer0": "terracotta_knights:item/tiny_diamond_boots"
   }
 
 }

@@ -1,5 +1,6 @@
 package io.github.Bubblie01.terracotta_knights;
 
+import io.github.Bubblie01.terracotta_knights.entities.TerracottaKnightEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,7 +14,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
-import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
+import org.apache.logging.log4j.core.jmx.Server;
 
 public class TerracottaKnightItem extends Item implements DyeableItem {
 	public TerracottaKnightItem(Settings settings) {
@@ -26,9 +27,10 @@ public class TerracottaKnightItem extends Item implements DyeableItem {
 		HitResult hitResult = raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
 		BlockHitResult blockHitResult = (BlockHitResult)hitResult;
 		EntityType<?> terracottaType = TerracottaKnightEntity.TERRACOTTA_KNIGHT;
-		TerracottaKnightEntity knight = (TerracottaKnightEntity) terracottaType.create(world);
 		if(!world.isClient) {
-			((TerracottaKnightEntity) terracottaType.spawnFromItemStack((ServerWorld) world, itemStack, user, blockHitResult.getBlockPos(), SpawnReason.SPAWN_EGG, true, false)).setColor(this.getColor(user.getStackInHand(hand)));
+			TerracottaKnightEntity knight = (TerracottaKnightEntity) terracottaType.create((ServerWorld) world, null, EntityType.createDefaultStackSpawnConfig((ServerWorld) world, itemStack, user), blockHitResult.getBlockPos(), SpawnReason.SPAWN_EGG, true, false);
+			knight.setColor(this.getColor(user.getStackInHand(hand)));
+			((ServerWorld)world).spawnEntityAndPassengers(knight);
 
 		}
 		return super.use(world, user, hand);

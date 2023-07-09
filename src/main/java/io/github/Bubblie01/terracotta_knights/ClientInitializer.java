@@ -1,14 +1,13 @@
 package io.github.Bubblie01.terracotta_knights;
 
+import io.github.Bubblie01.terracotta_knights.entities.TerracottaKnightEntity;
+import io.github.Bubblie01.terracotta_knights.entities.TinyArrowEntity;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.util.ModelIdentifier;
-import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
@@ -44,7 +43,7 @@ public class ClientInitializer implements ClientModInitializer {
 		EntityModelLayerRegistry.registerModelLayer(PITCHFORK, TinyPitchforkEntityModel::getTexturedModelData);
 
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
-			out.accept(new ModelIdentifier("terracotta_knights:tiny_diamond_pitchfork_item_model#inventory"));
+			out.accept(new ModelIdentifier(Main.MOD_ID, "tiny_diamond_pitchfork_item_model", "inventory"));
 		});
 
 

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "terracotta_knights:items/signal_device_item"
+    "layer0": "terracotta_knights:item/signal_device_item"
   }
 }

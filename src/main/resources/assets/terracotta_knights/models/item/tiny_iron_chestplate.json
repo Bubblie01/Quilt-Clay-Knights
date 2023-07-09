@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "terracotta_knights:items/tiny_iron_chestplate"
+    "layer0": "terracotta_knights:item/tiny_iron_chestplate"
   }
 
 }

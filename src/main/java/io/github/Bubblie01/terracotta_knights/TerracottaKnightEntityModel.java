@@ -1,16 +1,14 @@
 package io.github.Bubblie01.terracotta_knights;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import io.github.Bubblie01.terracotta_knights.entities.TerracottaKnightEntity;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.CrossbowPosing;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.item.Items;
 import net.minecraft.util.Arm;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.MathHelper;
 
 public class TerracottaKnightEntityModel<T extends PathAwareEntity> extends PlayerEntityModel<TerracottaKnightEntity> {
 	private float r, g, b;
