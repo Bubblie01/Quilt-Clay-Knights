@@ -1,7 +1,7 @@
 package io.github.Bubblie01.terracotta_knights.entities;
 
 import io.github.Bubblie01.terracotta_knights.Main;
-import io.github.Bubblie01.terracotta_knights.TinyArrowItem;
+import io.github.Bubblie01.terracotta_knights.items.TinyArrowItem;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnGroup;

@@ -1,4 +1,4 @@
-package io.github.Bubblie01.terracotta_knights;// Made with Blockbench 4.2.5
+package io.github.Bubblie01.terracotta_knights.client.models;// Made with Blockbench 4.2.5
 // Exported for Minecraft version 1.17 - 1.18 with Mojang mappings
 // Paste this class into your mod and generate all required imports
 

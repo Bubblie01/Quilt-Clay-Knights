@@ -1,12 +1,11 @@
-package io.github.Bubblie01.terracotta_knights;
+package io.github.Bubblie01.terracotta_knights.items;
 
+import io.github.Bubblie01.terracotta_knights.entities.TinyPitchforkEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.TridentItem;
 import net.minecraft.item.Vanishable;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;

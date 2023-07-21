@@ -1,7 +1,12 @@
 package io.github.Bubblie01.terracotta_knights;
 
+import io.github.Bubblie01.terracotta_knights.client.renderer.TerracottaKnightEntityRenderer;
+import io.github.Bubblie01.terracotta_knights.client.renderer.TinyArrowRenderer;
+import io.github.Bubblie01.terracotta_knights.client.models.TinyPitchforkEntityModel;
+import io.github.Bubblie01.terracotta_knights.client.renderer.TinyPitchforkEntityRenderer;
 import io.github.Bubblie01.terracotta_knights.entities.TerracottaKnightEntity;
 import io.github.Bubblie01.terracotta_knights.entities.TinyArrowEntity;
+import io.github.Bubblie01.terracotta_knights.entities.TinyPitchforkEntity;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;

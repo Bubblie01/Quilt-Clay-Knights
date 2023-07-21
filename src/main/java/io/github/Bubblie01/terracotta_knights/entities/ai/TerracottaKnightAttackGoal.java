@@ -1,5 +1,6 @@
-package io.github.Bubblie01.terracotta_knights;
+package io.github.Bubblie01.terracotta_knights.entities.ai;
 
+import io.github.Bubblie01.terracotta_knights.TerracottaRegistry;
 import io.github.Bubblie01.terracotta_knights.entities.TerracottaKnightEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -82,6 +83,7 @@ public class TerracottaKnightAttackGoal extends Goal{
 
 	@Override
 	public void tick() {
+		//CLEAN UP THIS CODE LOSER JESUS FUCKING CHRIST
 		if(knightEntity.getAttacker() instanceof TerracottaKnightEntity && knightEntity.getColor() != ((TerracottaKnightEntity) knightEntity.getAttacker()).getColor() && knightEntity.getAttacker() != null) {
 			knightEntity.setTarget(knightEntity.getAttacker());
 		}
@@ -119,6 +121,14 @@ public class TerracottaKnightAttackGoal extends Goal{
 			}
 
 		super.tick();
+	}
+
+	@Override
+	public boolean canStop() {
+		if(knightEntity.getTarget() != null)
+			if(!knightEntity.getVisibilityCache().canSee(knightEntity.getTarget()))
+				return true;
+		return false;
 	}
 
 	@Override

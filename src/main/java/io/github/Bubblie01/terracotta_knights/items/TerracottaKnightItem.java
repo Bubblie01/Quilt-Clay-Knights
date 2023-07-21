@@ -1,4 +1,4 @@
-package io.github.Bubblie01.terracotta_knights;
+package io.github.Bubblie01.terracotta_knights.items;
 
 import io.github.Bubblie01.terracotta_knights.entities.TerracottaKnightEntity;
 import net.minecraft.entity.EntityType;
@@ -16,7 +16,7 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.core.jmx.Server;
 
-public class TerracottaKnightItem extends Item implements DyeableItem {
+public class TerracottaKnightItem extends Item implements DyeableItem, TerracottaItemFlag {
 	public TerracottaKnightItem(Settings settings) {
 		super(settings);
 	}

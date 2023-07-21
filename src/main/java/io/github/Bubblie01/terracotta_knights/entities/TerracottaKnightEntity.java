@@ -1,6 +1,10 @@
 package io.github.Bubblie01.terracotta_knights.entities;
 
 import io.github.Bubblie01.terracotta_knights.*;
+import io.github.Bubblie01.terracotta_knights.entities.ai.ItemPickupGoal;
+import io.github.Bubblie01.terracotta_knights.entities.ai.TerracottaKnightAttackGoal;
+import io.github.Bubblie01.terracotta_knights.items.TinyArmorItem;
+import io.github.Bubblie01.terracotta_knights.items.TinySwordItem;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
@@ -52,7 +56,8 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	protected void initGoals() {
 		this.goalSelector.add(0, new TerracottaKnightAttackGoal(this, 10.0f, 2.0f));
 		this.goalSelector.add(1, new WanderAroundFarGoal(this,0.5f));
-		this.goalSelector.add(0, new LookAroundGoal(this));
+		this.goalSelector.add(2, new LookAroundGoal(this));
+		this.goalSelector.add(1, new ItemPickupGoal(this, 5.0f));
 		super.initGoals();
 	}
 
@@ -75,6 +80,12 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
 		return SoundEvents.BLOCK_STONE_PLACE;
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TerracottaRegistry.SOUL_WHISPER_SOUND_EVENT;
 	}
 
 	@Override
@@ -113,6 +124,11 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 
 	public void setColor(int color) {
 		this.dataTracker.set(COLOR, color);
+	}
+
+	@Override
+	protected void mobTick() {
+		super.mobTick();
 	}
 
 	@Override

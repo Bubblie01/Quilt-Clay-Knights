@@ -1,4 +1,4 @@
-package io.github.Bubblie01.terracotta_knights;
+package io.github.Bubblie01.terracotta_knights.client.renderer;
 
 import io.github.Bubblie01.terracotta_knights.entities.TinyArrowEntity;
 import net.minecraft.client.render.VertexConsumerProvider;

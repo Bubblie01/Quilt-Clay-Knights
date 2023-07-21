@@ -1,19 +1,17 @@
-package io.github.Bubblie01.terracotta_knights;
+package io.github.Bubblie01.terracotta_knights.client.renderer;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import io.github.Bubblie01.terracotta_knights.Main;
+import io.github.Bubblie01.terracotta_knights.TerracottaRegistry;
+import io.github.Bubblie01.terracotta_knights.client.models.TinyPitchforkEntityModel;
+import io.github.Bubblie01.terracotta_knights.entities.TinyPitchforkEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.ProjectileEntityRenderer;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
-import net.minecraft.client.render.entity.model.TridentEntityModel;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
 
 public class TinyPitchforkEntityRenderer extends EntityRenderer<TinyPitchforkEntity> {
 

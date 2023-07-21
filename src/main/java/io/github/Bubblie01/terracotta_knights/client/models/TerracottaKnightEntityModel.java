@@ -1,6 +1,7 @@
-package io.github.Bubblie01.terracotta_knights;
+package io.github.Bubblie01.terracotta_knights.client.models;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import io.github.Bubblie01.terracotta_knights.TerracottaRegistry;
 import io.github.Bubblie01.terracotta_knights.entities.TerracottaKnightEntity;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.BipedEntityModel;

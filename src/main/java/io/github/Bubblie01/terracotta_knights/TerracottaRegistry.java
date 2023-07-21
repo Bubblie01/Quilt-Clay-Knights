@@ -1,5 +1,6 @@
 package io.github.Bubblie01.terracotta_knights;
 
+import io.github.Bubblie01.terracotta_knights.items.*;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.item.*;
@@ -82,6 +83,8 @@ public class TerracottaRegistry {
 		Registry.register(Registries.ITEM, new Identifier(Main.MOD_ID, "tiny_diamond_chestplate"), TINY_DIAMOND_CHESTPLATE);
 		Registry.register(Registries.ITEM, new Identifier(Main.MOD_ID, "tiny_diamond_leggings"), TINY_DIAMOND_LEGGINGS);
 		Registry.register(Registries.ITEM, new Identifier(Main.MOD_ID, "tiny_diamond_boots"), TINY_DIAMOND_BOOTS);
+		//Netherite Armor
+
 
 	}
 
