@@ -1,5 +1,6 @@
 package io.github.Bubblie01.terracotta_knights.items;
 
+import io.github.Bubblie01.terracotta_knights.TerracottaRegistry;
 import io.github.Bubblie01.terracotta_knights.entities.TinyArrowEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -14,7 +15,7 @@ public class TinyArrowItem extends ArrowItem implements TerracottaItemFlag{
 
 	@Override
 	public PersistentProjectileEntity createArrow(World world, ItemStack stack, LivingEntity shooter) {
-		TinyArrowEntity arrowEntity = new TinyArrowEntity(TinyArrowEntity.TINY_ARROW,shooter, world);
+		TinyArrowEntity arrowEntity = new TinyArrowEntity(TerracottaRegistry.TINY_ARROW,shooter, world);
 		return arrowEntity;
 	}
 }

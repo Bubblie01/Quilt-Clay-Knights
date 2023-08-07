@@ -3,10 +3,7 @@ package io.github.Bubblie01.terracotta_knights.entities;
 import io.github.Bubblie01.terracotta_knights.*;
 import io.github.Bubblie01.terracotta_knights.entities.ai.ItemPickupGoal;
 import io.github.Bubblie01.terracotta_knights.entities.ai.TerracottaKnightAttackGoal;
-import io.github.Bubblie01.terracotta_knights.items.TerracottaItemFlag;
-import io.github.Bubblie01.terracotta_knights.items.TerracottaKnightItem;
-import io.github.Bubblie01.terracotta_knights.items.TinyArmorItem;
-import io.github.Bubblie01.terracotta_knights.items.TinySwordItem;
+import io.github.Bubblie01.terracotta_knights.items.*;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
@@ -42,18 +39,16 @@ import java.util.List;
 
 public class TerracottaKnightEntity extends PathAwareEntity {
 	//public static final EntityType<TerracottaKnightEntity> TERRACOTTA_KNIGHT = Registry.register(Registry.ENTITY_TYPE, new Identifier(Main.MOD_ID, "terracotta_knight_entity"),FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, TerracottaKnightEntity::new).dimensions(EntityDimensions.changing(0.5F, 1.2F)).build());
-	public static final EntityType<TerracottaKnightEntity> TERRACOTTA_KNIGHT = Registry.register(Registries.ENTITY_TYPE, new Identifier(Main.MOD_ID, "terracotta_knight_entity"), QuiltEntityTypeBuilder.create(SpawnGroup.MONSTER, TerracottaKnightEntity::new).setDimensions(EntityDimensions.changing(0.5f,1.2f)).build());
 	public static final TrackedData<Integer> COLOR = DataTracker.registerData(TerracottaKnightEntity.class, TrackedDataHandlerRegistry.INTEGER);
 	public static final TrackedData<BlockPos> POS = DataTracker.registerData(TerracottaKnightEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
 	public static final SimpleInventory terracottaKnightInventory = new SimpleInventory(5);
 	public DyeColor dyeColor;
-	private TerracottaKnightItem itemForm;
-	protected TerracottaKnightEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
+	public TerracottaKnightEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
 	public static void registerClayKnightEntityAttributes() {
-		FabricDefaultAttributeRegistry.register(TERRACOTTA_KNIGHT, TerracottaKnightEntity.createAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.5f).add(EntityAttributes.GENERIC_FOLLOW_RANGE, 5.0f).add(EntityAttributes.GENERIC_ATTACK_SPEED, 4.0f).add(EntityAttributes.GENERIC_ATTACK_DAMAGE,  0.5f).add(EntityAttributes.GENERIC_MAX_HEALTH, 12f));
+		FabricDefaultAttributeRegistry.register(TerracottaRegistry.TERRACOTTA_KNIGHT, TerracottaKnightEntity.createAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.5f).add(EntityAttributes.GENERIC_FOLLOW_RANGE, 5.0f).add(EntityAttributes.GENERIC_ATTACK_SPEED, 4.0f).add(EntityAttributes.GENERIC_ATTACK_DAMAGE,  0.5f).add(EntityAttributes.GENERIC_MAX_HEALTH, 12f));
 	}
 
 	@Override
@@ -82,6 +77,12 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
 		return SoundEvents.BLOCK_STONE_PLACE;
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.BLOCK_CALCITE_BREAK;
 	}
 
 	@Override
@@ -117,18 +118,65 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 		});
 		TerracottaKnightItem item = TerracottaRegistry.TERRACOTTA_KNIGHT_ITEM;
 		ItemStack stack = item.getDefaultStack();
+		stack.setCustomName(this.getCustomName());
 		item.setColor(stack, this.getColor());
 		this.dropStack(stack);
 	}
 
-	public void setItemForm(TerracottaKnightItem item) {
-		itemForm = item;
-	}
-
-	@Override
 	public boolean prefersNewEquipment(ItemStack newStack, ItemStack oldStack) {
-		return super.prefersNewEquipment(newStack, oldStack);
-	}
+			if (oldStack.isEmpty()) {
+				return true;
+			} else if (newStack.getItem() instanceof SwordItem) {
+				if (!(oldStack.getItem() instanceof SwordItem)) {
+					return false;
+				} else {
+					SwordItem swordItem = (SwordItem)newStack.getItem();
+					SwordItem swordItem2 = (SwordItem)oldStack.getItem();
+					if (swordItem.getAttackDamage() != swordItem2.getAttackDamage()) {
+						return swordItem.getAttackDamage() > swordItem2.getAttackDamage();
+					} else {
+						return this.prefersNewDamageableItem(newStack, oldStack);
+					}
+				}
+			} else if (newStack.getItem() instanceof BowItem && oldStack.getItem() instanceof BowItem) {
+				return this.prefersNewDamageableItem(newStack, oldStack);
+			} else if (newStack.getItem() instanceof CrossbowItem && oldStack.getItem() instanceof CrossbowItem) {
+				return this.prefersNewDamageableItem(newStack, oldStack);
+			} else if (newStack.getItem() instanceof ArmorItem) {
+				if (EnchantmentHelper.hasBindingCurse(oldStack)) {
+					return false;
+				} else if (!(oldStack.getItem() instanceof ArmorItem)) {
+					return true;
+				} else {
+					ArmorItem armorItem = (ArmorItem)newStack.getItem();
+					ArmorItem armorItem2 = (ArmorItem)oldStack.getItem();
+					if (armorItem.getProtection() != armorItem2.getProtection()) {
+						return armorItem.getProtection() > armorItem2.getProtection();
+					} else if (armorItem.getToughness() != armorItem2.getToughness()) {
+						return armorItem.getToughness() > armorItem2.getToughness();
+					} else {
+						return this.prefersNewDamageableItem(newStack, oldStack);
+					}
+				}
+			} else {
+				if (newStack.getItem() instanceof MiningToolItem) {
+					if (oldStack.getItem() instanceof BlockItem) {
+						return true;
+					}
+
+					if (oldStack.getItem() instanceof MiningToolItem) {
+						MiningToolItem miningToolItem = (MiningToolItem)newStack.getItem();
+						MiningToolItem miningToolItem2 = (MiningToolItem)oldStack.getItem();
+						if (miningToolItem.getAttackDamage() != miningToolItem2.getAttackDamage()) {
+							return miningToolItem.getAttackDamage() > miningToolItem2.getAttackDamage();
+						}
+
+						return this.prefersNewDamageableItem(newStack, oldStack);
+					}
+				}
+				return false;
+			}
+		}
 
 	@Override
 	public boolean canPickupItem(ItemStack stack) {
@@ -204,6 +252,14 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 				item.decrement(1);
 		}
 
+		if(itemCopy.getItem() instanceof TinyBowItem) {
+			this.dropStack(this.getEquippedStack(EquipmentSlot.MAINHAND));
+			//this.equipStack(EquipmentSlot.MAINHAND, Items.AIR.getDefaultStack());
+			this.equipLootStack(EquipmentSlot.MAINHAND, itemCopy);
+			if(!player.isCreative())
+				item.decrement(1);
+		}
+
 		if(itemCopy.getItem() instanceof TinyArmorItem) {
 			ItemStack itemStack = this.getEquippedStack(((TinyArmorItem) itemCopy.getItem()).getPreferredSlot());
 			this.dropStack(itemStack);
@@ -213,10 +269,6 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 		}
 
 		this.swingHand(Hand.MAIN_HAND);
-		Iterable<ItemStack> equipList = this.getItemsEquipped();
-		equipList.forEach((element) -> {
-			System.out.println(element.getItem().getName());
-		});
 		return super.interactMob(player, hand);
 	}
 

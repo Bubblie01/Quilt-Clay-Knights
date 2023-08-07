@@ -17,14 +17,13 @@ import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 
-import static io.github.Bubblie01.terracotta_knights.TerracottaRegistry.PITCHFORK;
 
 public class ClientInitializer implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient(ModContainer mod) {
 
-		EntityRendererRegistry.register(TerracottaKnightEntity.TERRACOTTA_KNIGHT, ((context -> {
+		EntityRendererRegistry.register(TerracottaRegistry.TERRACOTTA_KNIGHT, ((context -> {
 			return new TerracottaKnightEntityRenderer(context, EntityModelLayers.PLAYER_INNER_ARMOR, EntityModelLayers.PLAYER_OUTER_ARMOR);
 		})));
 		ModelPredicateProviderRegistry.register(TerracottaRegistry.TINY_BOW_ITEM, new Identifier("pulling"),(stack, world, entity, seed) -> entity != null && entity.isUsingItem() && entity.getActiveItem() == stack ? 1.0F : 0.0F);
@@ -37,7 +36,7 @@ public class ClientInitializer implements ClientModInitializer {
 			}
 		});
 
-		EntityRendererRegistry.register(TinyArrowEntity.TINY_ARROW, ((context -> {
+		EntityRendererRegistry.register(TerracottaRegistry.TINY_ARROW, ((context -> {
 			return new TinyArrowRenderer(context);
 		})));
 
@@ -45,11 +44,13 @@ public class ClientInitializer implements ClientModInitializer {
 			return new TinyPitchforkEntityRenderer(context);
 		})));
 
-		EntityModelLayerRegistry.registerModelLayer(PITCHFORK, TinyPitchforkEntityModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(TinyPitchforkEntityModel.PITCHFORK, TinyPitchforkEntityModel::getTexturedModelData);
 
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
 			out.accept(new ModelIdentifier(Main.MOD_ID, "tiny_diamond_pitchfork_item_model", "inventory"));
 		});
+
+		TerracottaRegistry.registerColors();
 
 
 

@@ -4,9 +4,11 @@ package io.github.Bubblie01.terracotta_knights.client.models;// Made with Blockb
 
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import io.github.Bubblie01.terracotta_knights.Main;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.model.EntityModel;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
@@ -16,6 +18,7 @@ public class TinyPitchforkEntityModel extends Model {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
 	private final ModelPart bb_main;
 
+	public static final EntityModelLayer PITCHFORK = new EntityModelLayer(new Identifier(Main.MOD_ID, "pitchfork"), "pitchfork");
 	public TinyPitchforkEntityModel(ModelPart root) {
 		super(RenderLayer::getEntitySmoothCutout);
 		this.bb_main = root;

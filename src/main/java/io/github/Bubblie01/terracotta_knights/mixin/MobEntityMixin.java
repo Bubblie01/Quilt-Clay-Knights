@@ -14,12 +14,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(MobEntity.class)
 public class MobEntityMixin {
 
-	@Inject(method = "canEquip", at = @At("HEAD"), cancellable = true)
-	private void terracotta$_equipModificationMethod(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
+	@Inject(method = "prefersNewEquipment", at = @At("HEAD"), cancellable = true)
+	private void terracotta$_equipModificationMethod(ItemStack newStack, ItemStack oldStack, CallbackInfoReturnable<Boolean> cir) {
 		System.out.println("No Balls");
-		if(stack.getItem() instanceof TerracottaItemFlag) {
+		if(newStack.getItem() instanceof TerracottaItemFlag) {
 			System.out.println("Balls");
-			cir.cancel();
+			cir.setReturnValue(false);
 		}
 	}
 }

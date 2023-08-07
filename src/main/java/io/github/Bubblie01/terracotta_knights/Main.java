@@ -28,13 +28,12 @@ public class Main implements ModInitializer {
 		TerracottaKnightEntity.registerClayKnightEntityAttributes();
 		TerracottaRegistry.registerItems();
 		TerracottaRegistry.registerRecipies();
-		TerracottaRegistry.registerColors();
 		TerracottaRegistry.registerSounds();
 		ItemDispenserBehavior itemDispenserBehavior = new ItemDispenserBehavior() {
 			@Override
 			public ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
 				Direction direction = pointer.getBlockState().get(DispenserBlock.FACING);
-				EntityType<?> entityType = TerracottaKnightEntity.TERRACOTTA_KNIGHT;
+				EntityType<?> entityType = TerracottaRegistry.TERRACOTTA_KNIGHT;
 				TerracottaKnightItem item = (TerracottaKnightItem)stack.getItem();
 				try {
 					((TerracottaKnightEntity)(entityType.spawnFromItemStack(pointer.getWorld(), stack, null, pointer.getPos().offset(direction), SpawnReason.DISPENSER, direction != Direction.UP, false))).setColor(item.getColor(stack));

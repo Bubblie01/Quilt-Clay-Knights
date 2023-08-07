@@ -1,5 +1,6 @@
 package io.github.Bubblie01.terracotta_knights.items;
 
+import io.github.Bubblie01.terracotta_knights.TerracottaRegistry;
 import io.github.Bubblie01.terracotta_knights.entities.TerracottaKnightEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -26,12 +27,14 @@ public class TerracottaKnightItem extends Item implements DyeableItem {
 		ItemStack itemStack = user.getStackInHand(hand);
 		HitResult hitResult = raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
 		BlockHitResult blockHitResult = (BlockHitResult)hitResult;
-		EntityType<?> terracottaType = TerracottaKnightEntity.TERRACOTTA_KNIGHT;
+		EntityType<?> terracottaType = TerracottaRegistry.TERRACOTTA_KNIGHT;
 		if(!world.isClient) {
 			TerracottaKnightEntity knight = (TerracottaKnightEntity) terracottaType.create((ServerWorld) world, null, EntityType.createDefaultStackSpawnConfig((ServerWorld) world, itemStack, user), blockHitResult.getBlockPos(), SpawnReason.SPAWN_EGG, true, false);
 			knight.setColor(this.getColor(user.getStackInHand(hand)));
 			((ServerWorld)world).spawnEntityAndPassengers(knight);
 		}
+		if(!user.isCreative())
+			itemStack.decrement(1);
 		return super.use(world, user, hand);
 	}
 

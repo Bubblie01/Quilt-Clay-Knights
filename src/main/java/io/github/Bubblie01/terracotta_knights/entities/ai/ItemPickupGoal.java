@@ -1,5 +1,6 @@
 package io.github.Bubblie01.terracotta_knights.entities.ai;
 
+import io.github.Bubblie01.terracotta_knights.TerracottaRegistry;
 import io.github.Bubblie01.terracotta_knights.entities.TerracottaKnightEntity;
 import io.github.Bubblie01.terracotta_knights.items.TerracottaItemFlag;
 import io.github.Bubblie01.terracotta_knights.items.TinyArmorItem;
@@ -37,15 +38,16 @@ public class ItemPickupGoal extends Goal {
 			ItemEntity item = tempList.get(i);
 			if(this.knightEntity.getVisibilityCache().canSee(item)) {
 				if(item.getStack().getItem() instanceof TinySwordItem) {
-					if(this.knightEntity.prefersNewEquipment(item.getStack(), this.knightEntity.getEquippedStack(EquipmentSlot.MAINHAND)))
-						itemList.add(item);
+					if(item.getStack().getItem() != TerracottaRegistry.TINY_BOW_ITEM)
+						if(this.knightEntity.prefersNewEquipment(item.getStack(), this.knightEntity.getEquippedStack(EquipmentSlot.MAINHAND)))
+							itemList.add(item);
 
 				}
 				else if(item.getStack().getItem() instanceof TinyArmorItem) {
 					if (this.knightEntity.prefersNewEquipment(item.getStack(), this.knightEntity.getEquippedStack(((TinyArmorItem) item.getStack().getItem()).getPreferredSlot())))
 						itemList.add(item);
 				}
-				else if(item.getStack().getItem() instanceof TinyBowItem) {
+				else if(item.getStack().getItem() instanceof TinyBowItem && knightEntity.getEquippedStack(EquipmentSlot.MAINHAND).getItem() == Items.AIR) {
 					itemList.add(item);
 				}
 				else {

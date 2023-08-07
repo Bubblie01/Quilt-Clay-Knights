@@ -1,9 +1,14 @@
 package io.github.Bubblie01.terracotta_knights;
 
+import io.github.Bubblie01.terracotta_knights.entities.TerracottaKnightEntity;
+import io.github.Bubblie01.terracotta_knights.entities.TinyArrowEntity;
 import io.github.Bubblie01.terracotta_knights.items.*;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.*;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.registry.*;
@@ -11,6 +16,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
 
 public class TerracottaRegistry {
 
@@ -58,20 +64,22 @@ public class TerracottaRegistry {
 	//recipies
 	public static SpecialRecipeSerializer<TerracottaKnightRecipe> TERRACOTTA_KNIGHT_RECIPE;
 
+	public static final EntityType<TinyArrowEntity> TINY_ARROW = Registry.register(Registries.ENTITY_TYPE, new Identifier(Main.MOD_ID, "tiny_arrow_entity"), QuiltEntityTypeBuilder.<TinyArrowEntity>create(SpawnGroup.MISC, TinyArrowEntity::new).build());
+	public static final EntityType<TerracottaKnightEntity> TERRACOTTA_KNIGHT = Registry.register(Registries.ENTITY_TYPE, new Identifier(Main.MOD_ID, "terracotta_knight_entity"), QuiltEntityTypeBuilder.create(SpawnGroup.MONSTER, TerracottaKnightEntity::new).setDimensions(EntityDimensions.changing(0.5f,1.2f)).build());
 	//sounds
 	public static final Identifier SIGNAL_SOUND_ID = new Identifier(Main.MOD_ID, "signal_sound");
-	public static final SoundEvent SIGNAL_SOUND_EVENT = SoundEvent.createFixedRangeEvent(SIGNAL_SOUND_ID, 0.5f);
+	public static final SoundEvent SIGNAL_SOUND_EVENT = SoundEvent.createVariableRangeEvent(SIGNAL_SOUND_ID);
 	public static final Identifier SOUL_WHISPER_SOUND_ID = new Identifier(Main.MOD_ID, "soul_whisper");
 	public static final SoundEvent SOUL_WHISPER_SOUND_EVENT = SoundEvent.createFixedRangeEvent(SOUL_WHISPER_SOUND_ID,0.5f);
 
 	//model layer
-	public static final EntityModelLayer PITCHFORK = new EntityModelLayer(new Identifier(Main.MOD_ID, "pitchfork"), "pitchfork");
 
 	public static void registerItems() {
 		Registry.register(Registries.ITEM_GROUP, TERRACOTTA_KNIGHT_ITEM_GROUP, FabricItemGroup.builder().name(Text.translatable(Util.createTranslationKey("itemGroup", new Identifier(Main.MOD_ID, "terracotta_knights"))))
 				.icon(() -> new ItemStack(TERRACOTTA_KNIGHT_ITEM))
 				.entries((display, entries) -> {
 					entries.addItem(TERRACOTTA_KNIGHT_ITEM);
+					entries.addItem(SIGNAL_DEVICE_ITEM);
 					entries.addItem(TINY_BOW_ITEM);
 					entries.addItem(TINY_WOODEN_SWORD_ITEM);
 					entries.addItem(TINY_STONE_SWORD_ITEM);

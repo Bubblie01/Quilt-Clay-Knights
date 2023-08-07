@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import io.github.Bubblie01.terracotta_knights.Main;
 import io.github.Bubblie01.terracotta_knights.TerracottaRegistry;
 import io.github.Bubblie01.terracotta_knights.client.models.TinyPitchforkEntityModel;
+import io.github.Bubblie01.terracotta_knights.client.models.TinyPitchforkModel;
 import io.github.Bubblie01.terracotta_knights.entities.TinyPitchforkEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -18,7 +19,7 @@ public class TinyPitchforkEntityRenderer extends EntityRenderer<TinyPitchforkEnt
 	private final TinyPitchforkEntityModel model;
 	public TinyPitchforkEntityRenderer(EntityRendererFactory.Context context) {
 		super(context);
-		this.model = new TinyPitchforkEntityModel(context.getPart(TerracottaRegistry.PITCHFORK));
+		this.model = new TinyPitchforkEntityModel(context.getPart(TinyPitchforkEntityModel.PITCHFORK));
 	}
 
 	@Override
