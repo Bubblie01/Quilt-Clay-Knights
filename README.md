@@ -1,4 +1,4 @@
-# Quilt-Clay-Knights
+# Terracotta Knights
 
 Inspired by the original clay soliders mod for forge, you can command and have these little guys fight for you! This is a quilt only mod, does not work with fabric or forge. 
 
