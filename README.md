@@ -4,6 +4,7 @@ Inspired by the original clay soliders mod for forge, you can command and have t
 
 ## Credits
 Harpsi - Texturer/Modeler
+
 Carter - Texture/Modeler
 ## License
 
