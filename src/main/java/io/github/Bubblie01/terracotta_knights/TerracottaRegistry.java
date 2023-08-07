@@ -81,6 +81,7 @@ public class TerracottaRegistry {
 					entries.addItem(TERRACOTTA_KNIGHT_ITEM);
 					entries.addItem(SIGNAL_DEVICE_ITEM);
 					entries.addItem(TINY_BOW_ITEM);
+					entries.addItem(TINY_ARROW_ITEM);
 					entries.addItem(TINY_WOODEN_SWORD_ITEM);
 					entries.addItem(TINY_STONE_SWORD_ITEM);
 					entries.addItem(TINY_IRON_SWORD_ITEM);

@@ -18,7 +18,6 @@ import static io.github.Bubblie01.terracotta_knights.TerracottaRegistry.TINY_ARR
 public class TinyArrowEntity extends PersistentProjectileEntity {
 	//public static final EntityType<TinyArrowEntity> TINY_ARROW = EntityTypeAccessor.callRegister("tiny_arrow", EntityType.Builder.create(TinyArrowEntity::new, SpawnGroup.MISC));
 
-
 	public TinyArrowEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
 	}
