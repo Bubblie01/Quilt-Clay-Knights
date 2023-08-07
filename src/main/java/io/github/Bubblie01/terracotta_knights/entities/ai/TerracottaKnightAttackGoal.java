@@ -58,12 +58,15 @@ public class TerracottaKnightAttackGoal extends Goal{
 		if((enemyList != null && enemyList.size() != 0)) {
 			if((knightEntity.getTarget() == null || knightEntity.getTarget().isDead())) {
 					int random = (int) (Math.random() * enemyList.size());
-					knightEntity.setTarget(enemyList.get(random));
+					if(knightEntity.getVisibilityCache().canSee(enemyList.get(random)))
+						knightEntity.setTarget(enemyList.get(random));
+					else
+						return false;
 
 			}
 			else {
 				int knightColor = knightEntity.getColor();
-				int enemyColor = knightEntity.getColor();
+				int enemyColor = ((TerracottaKnightEntity)knightEntity.getTarget()).getColor();
 				if(enemyColor == knightColor) {
 					knightEntity.setTarget(null);
 				}
@@ -105,12 +108,10 @@ public class TerracottaKnightAttackGoal extends Goal{
 							System.out.println(useTime);
 							knightEntity.rangedAttack(knightEntity.getTarget(), BowItem.getPullProgress(useTime));
 						}
-						System.out.println("Far!!!");
 						knightEntity.getMoveControl().strafeTo(0.5f, 0.5f);
 						knightEntity.lookAtEntity(knightEntity.getTarget(), 30.0F, 30.0F);
 
 					} else if (knightEntity.squaredDistanceTo(knightEntity.getTarget()) <= 5) {
-						System.out.println("Close!!!");
 						knightEntity.getMoveControl().strafeTo(-0.5f, -0.5f);
 						knightEntity.lookAtEntity(knightEntity.getTarget(), 30.0F, 30.0F);
 					}

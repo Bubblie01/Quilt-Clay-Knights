@@ -1,7 +1,43 @@
 {
-  "parent": "item/handheld",
+  "parent": "minecraft:item/handheld",
   "textures": {
     "layer0": "terracotta_knights:item/tiny_diamond_sword_item"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [-47, -90, 0],
+      "translation": [0, 9, 1.75],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [-47, -90, -90],
+      "translation": [0, 9, 1.75],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "firstperson_righthand": {
+      "rotation": [-66.5, -90, 0],
+      "translation": [1.13, 6.7, -1.12]
+    },
+    "firstperson_lefthand": {
+      "rotation": [-66.5, -90, -90],
+      "translation": [1.13, 6.7, -1.12]
+    },
+    "ground": {
+      "translation": [2.25, 2, 0]
+    },
+    "gui": {
+      "translation": [2.75, 3, 0],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "head": {
+      "rotation": [0, 180, 0],
+      "translation": [-3, 14.5, 7],
+      "scale": [1.5, 1.5, 1.5]
+    },
+    "fixed": {
+      "translation": [2.75, 3, 0],
+      "scale": [1.5, 1.5, 1.5]
+    }
   }
-
+}
 }

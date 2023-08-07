@@ -40,8 +40,8 @@ public class TerracottaKnightEntityRenderer extends BipedEntityRenderer<Terracot
 	@Override
 	public void render(TerracottaKnightEntity mobEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
 		if(mobEntity.hasCustomName()) {
-			if (mobEntity.getCustomName().equals(Text.of("leocth"))) {
-				textureIdentifier = new Identifier(Main.MOD_ID, "textures/entities/leocth.png");
+			if (mobEntity.getCustomName().equals(Text.of("fusion"))) {
+				textureIdentifier = new Identifier(Main.MOD_ID, "textures/entities/fusion_flux.png");
 			}
 		}
 		else {

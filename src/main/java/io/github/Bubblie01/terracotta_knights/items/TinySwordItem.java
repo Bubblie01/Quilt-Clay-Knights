@@ -1,16 +1,25 @@
 package io.github.Bubblie01.terracotta_knights.items;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
+import net.minecraft.world.World;
 
 public class TinySwordItem extends SwordItem implements TerracottaItemFlag {
 
-	public TinySwordItem(ToolMaterial toolMaterial, int i, float f, Settings settings) {
-		super(toolMaterial, i, f, settings);
+	private final float attackDamage;
+	public TinySwordItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Item.Settings settings) {
+		super(toolMaterial, attackDamage, attackSpeed, settings);
+		this.attackDamage = (float)attackDamage + toolMaterial.getAttackDamage();
 	}
+
 
 	@Override
 	public float getAttackDamage() {
-		return 1.0F;
+		return attackDamage;
 	}
 }

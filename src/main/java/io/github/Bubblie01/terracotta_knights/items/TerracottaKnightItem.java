@@ -16,7 +16,7 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.core.jmx.Server;
 
-public class TerracottaKnightItem extends Item implements DyeableItem, TerracottaItemFlag {
+public class TerracottaKnightItem extends Item implements DyeableItem {
 	public TerracottaKnightItem(Settings settings) {
 		super(settings);
 	}
@@ -31,7 +31,6 @@ public class TerracottaKnightItem extends Item implements DyeableItem, Terracott
 			TerracottaKnightEntity knight = (TerracottaKnightEntity) terracottaType.create((ServerWorld) world, null, EntityType.createDefaultStackSpawnConfig((ServerWorld) world, itemStack, user), blockHitResult.getBlockPos(), SpawnReason.SPAWN_EGG, true, false);
 			knight.setColor(this.getColor(user.getStackInHand(hand)));
 			((ServerWorld)world).spawnEntityAndPassengers(knight);
-
 		}
 		return super.use(world, user, hand);
 	}
