@@ -6,6 +6,4 @@ Inspired by the original clay soliders mod for forge, you can command and have t
 Harpsi - Texturer/Modeler, swag individual
 ## License
 
-This template on the QuiltMC GitHub is licensed under the [Creative Common Zero v1.0 license](./LICENSE-TEMPLATE.md).
-
-Mods created with this template are not automatically licensed under the CC0, and are not required to give any kind of credit back to QuiltMC for this template.
+License is MPL please credit me and ask for permission if you are using any of my stuff. Thank you. 
