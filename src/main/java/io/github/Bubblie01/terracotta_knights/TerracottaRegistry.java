@@ -25,6 +25,7 @@ public class TerracottaRegistry {
 	public static final Identifier TERRACOTTA_KNIGHT_ITEM_GROUP = new Identifier(Main.MOD_ID, "terracotta_knights");
 	//Items
 	public static final TerracottaKnightItem TERRACOTTA_KNIGHT_ITEM = new TerracottaKnightItem(new Item.Settings());
+	public static final Item CLAY_KNIGHT_ITEM = new TerracottaKnightItem(new Item.Settings());
 	public static final ToolItem TINY_WOODEN_SWORD_ITEM = new TinySwordItem(ToolMaterials.WOOD,1, -2.4F, new Item.Settings());
 	public static final ToolItem TINY_STONE_SWORD_ITEM = new TinySwordItem(ToolMaterials.STONE,1, -2.4F, new Item.Settings());
 	public static final ToolItem TINY_IRON_SWORD_ITEM = new TinySwordItem(ToolMaterials.IRON,1, -2.4F, new Item.Settings());
@@ -72,12 +73,11 @@ public class TerracottaRegistry {
 	public static final Identifier SOUL_WHISPER_SOUND_ID = new Identifier(Main.MOD_ID, "soul_whisper");
 	public static final SoundEvent SOUL_WHISPER_SOUND_EVENT = SoundEvent.createFixedRangeEvent(SOUL_WHISPER_SOUND_ID,0.5f);
 
-	//model layer
-
 	public static void registerItems() {
 		Registry.register(Registries.ITEM_GROUP, TERRACOTTA_KNIGHT_ITEM_GROUP, FabricItemGroup.builder().name(Text.translatable(Util.createTranslationKey("itemGroup", new Identifier(Main.MOD_ID, "terracotta_knights"))))
 				.icon(() -> new ItemStack(TERRACOTTA_KNIGHT_ITEM))
 				.entries((display, entries) -> {
+					entries.addItem(CLAY_KNIGHT_ITEM);
 					entries.addItem(TERRACOTTA_KNIGHT_ITEM);
 					entries.addItem(SIGNAL_DEVICE_ITEM);
 					entries.addItem(TINY_BOW_ITEM);
@@ -112,6 +112,7 @@ public class TerracottaRegistry {
 
 
 		Registry.register(Registries.ITEM, new Identifier(Main.MOD_ID, "terracotta_knight"), TERRACOTTA_KNIGHT_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(Main.MOD_ID, "clay_knight"), CLAY_KNIGHT_ITEM);
 
 		Registry.register(Registries.ITEM, new Identifier(Main.MOD_ID, "tiny_wooden_sword_item"), TINY_WOODEN_SWORD_ITEM);
 		Registry.register(Registries.ITEM, new Identifier(Main.MOD_ID, "tiny_stone_sword_item"), TINY_STONE_SWORD_ITEM);

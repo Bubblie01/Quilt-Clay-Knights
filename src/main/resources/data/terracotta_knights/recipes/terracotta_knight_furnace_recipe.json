@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "terracotta_knights:clay_knight"
+  },
+  "result": "terracotta_knights:terracotta_knight",
+  "experience": 0.1,
+  "cookingtime": 200
+}

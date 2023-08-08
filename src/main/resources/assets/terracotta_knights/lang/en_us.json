@@ -5,7 +5,7 @@
   "item.terracotta_knights.tiny_wooden_sword_item": "TIny Wooden Sword",
   "item.terracotta_knights.tiny_stone_sword_item": "Tiny Stone Sword",
   "item.terracotta_knights.tiny_gold_sword_item": "Tiny Gold Sword",
-  "item.terracotta_knights.tiny_iron_sword_item": "TIny Iron Sword",
+  "item.terracotta_knights.tiny_iron_sword_item": "Tiny Iron Sword",
   "item.terracotta_knights.tiny_diamond_sword_item": "Tiny Diamond Sword",
   "item.terracotta_knights.tiny_netherite_sword_item": "Tiny Netherite Sword",
   "item.terracotta_knights.tiny_chainmail_boots": "Tihy Chainmail Boots",
@@ -30,6 +30,7 @@
   "item.terracotta_knights.tiny_netherite_helmet": "Tiny Netherite Helmet",
   "item.terracotta_knights.tiny_bow": "Tiny Bow",
   "item.terracotta_knights.signal_device_item": "Signal Device",
-  "item.terracotta_knights.tiny_arrow_item": "Tiny Arrow"
+  "item.terracotta_knights.tiny_arrow": "Tiny Arrow",
+  "item.terracotta_knights.clay_knight": "Clay Knight"
 
 }

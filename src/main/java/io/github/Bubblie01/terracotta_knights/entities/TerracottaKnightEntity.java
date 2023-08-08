@@ -54,7 +54,7 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 
 	@Override
 	protected void initGoals() {
-		this.goalSelector.add(0, new TerracottaKnightAttackGoal(this, 18.0f, 2.0f));
+		this.goalSelector.add(0, new TerracottaKnightAttackGoal(this, 20.0f, 2.0f));
 		this.goalSelector.add(1, new WanderAroundFarGoal(this,0.5f));
 		this.goalSelector.add(2, new LookAroundGoal(this));
 		this.goalSelector.add(1, new ItemPickupGoal(this, 5.0f));
