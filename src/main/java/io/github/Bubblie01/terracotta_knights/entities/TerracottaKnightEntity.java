@@ -109,15 +109,10 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 			return ItemStack.EMPTY;
 		}
 	}
-
 	@Override
 	public void onDeath(DamageSource source) {
 		super.onDeath(source);
 		if(this.getWorld().getGameRules().get(GameRules.DO_ENTITY_DROPS).get()) {
-			Iterable<ItemStack> equipList = this.getItemsEquipped();
-			equipList.forEach((element) -> {
-				this.dropStack(element);
-			});
 			TerracottaKnightItem item = TerracottaRegistry.TERRACOTTA_KNIGHT_ITEM;
 			ItemStack stack = item.getDefaultStack();
 			stack.setCustomName(this.getCustomName());
