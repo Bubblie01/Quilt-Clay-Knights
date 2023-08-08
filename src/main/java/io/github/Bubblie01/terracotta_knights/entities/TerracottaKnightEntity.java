@@ -31,6 +31,7 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
@@ -112,15 +113,17 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	@Override
 	public void onDeath(DamageSource source) {
 		super.onDeath(source);
-		Iterable<ItemStack> equipList = this.getItemsEquipped();
-		equipList.forEach((element) -> {
-			this.dropStack(element);
-		});
-		TerracottaKnightItem item = TerracottaRegistry.TERRACOTTA_KNIGHT_ITEM;
-		ItemStack stack = item.getDefaultStack();
-		stack.setCustomName(this.getCustomName());
-		item.setColor(stack, this.getColor());
-		this.dropStack(stack);
+		if(this.getWorld().getGameRules().get(GameRules.DO_ENTITY_DROPS).get()) {
+			Iterable<ItemStack> equipList = this.getItemsEquipped();
+			equipList.forEach((element) -> {
+				this.dropStack(element);
+			});
+			TerracottaKnightItem item = TerracottaRegistry.TERRACOTTA_KNIGHT_ITEM;
+			ItemStack stack = item.getDefaultStack();
+			stack.setCustomName(this.getCustomName());
+			item.setColor(stack, this.getColor());
+			this.dropStack(stack);
+		}
 	}
 
 	public boolean prefersNewEquipment(ItemStack newStack, ItemStack oldStack) {

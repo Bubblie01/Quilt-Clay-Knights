@@ -35,7 +35,7 @@ public class TerracottaKnightItem extends Item implements DyeableItem {
 		}
 		if(!user.isCreative())
 			itemStack.decrement(1);
-		return super.use(world, user, hand);
+		return TypedActionResult.success(itemStack, true);
 	}
 
 

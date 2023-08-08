@@ -16,9 +16,7 @@ public class MobEntityMixin {
 
 	@Inject(method = "prefersNewEquipment", at = @At("HEAD"), cancellable = true)
 	private void terracotta$_equipModificationMethod(ItemStack newStack, ItemStack oldStack, CallbackInfoReturnable<Boolean> cir) {
-		System.out.println("No Balls");
 		if(newStack.getItem() instanceof TerracottaItemFlag) {
-			System.out.println("Balls");
 			cir.setReturnValue(false);
 		}
 	}

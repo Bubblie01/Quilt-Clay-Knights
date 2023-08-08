@@ -18,7 +18,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class TerracottaKnightEntityRenderer extends BipedEntityRenderer<TerracottaKnightEntity, TerracottaKnightEntityModel<TerracottaKnightEntity>> {
 	private Identifier textureIdentifier = new Identifier(Main.MOD_ID, "textures/entities/terracotta_knight.png");
-	private String leocthChecker = "";
 	public TerracottaKnightEntityRenderer(EntityRendererFactory.Context context, EntityModelLayer innerArmorLayer, EntityModelLayer outerArmorLayer) {
 		super(context, new TerracottaKnightEntityModel(context.getPart(EntityModelLayers.PLAYER), false), 0.3f);
 		this.addFeature(new ArmorFeatureRenderer(this, new BipedEntityModel(context.getPart(innerArmorLayer)), new BipedEntityModel(context.getPart(outerArmorLayer)), context.getModelManager()));
@@ -39,32 +38,28 @@ public class TerracottaKnightEntityRenderer extends BipedEntityRenderer<Terracot
 
 	@Override
 	public void render(TerracottaKnightEntity mobEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
-		if(mobEntity.hasCustomName()) {
-			if (mobEntity.getCustomName().equals(Text.of("fusion")) || mobEntity.getCustomName().equals(Text.of("ennui")) || mobEntity.getCustomName().equals(Text.of("boba")) || mobEntity.getCustomName().equals(Text.of("maximum")) || mobEntity.getCustomName().equals(Text.of("harpsi")) || mobEntity.getCustomName().equals(Text.of("sonatiine")) || mobEntity.getCustomName().equals(Text.of("shard"))) {
-				textureIdentifier = new Identifier(Main.MOD_ID, "textures/entities/" + mobEntity.getCustomName().getString() + ".png");
-			}
+			int color = mobEntity.getDataTracker().get(TerracottaKnightEntity.COLOR);
+			float RGBColors[] = new float[3];
+			RGBColors[0] = (float) (color >> 16 & 0xFF) / 255.0F;
+			RGBColors[1] = (float) (color >> 8 & 0xFF) / 255.0F;
+			RGBColors[2] = (float) (color & 0xFF) / 255.0F;
+
+			VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(this.getModel().getLayer(this.getTexture(mobEntity)));
+			model.setColors(RGBColors[0], RGBColors[1], RGBColors[2]);
+			super.render(mobEntity, f, g, matrixStack, vertexConsumerProvider, i);
 		}
-		else {
-			textureIdentifier =	new Identifier(Main.MOD_ID, "textures/entities/terracotta_knight.png");
-		}
-
-		int color = mobEntity.getDataTracker().get(TerracottaKnightEntity.COLOR);
-		float RGBColors[] = new float[3];
-		RGBColors[0] = (float)(color >> 16 & 0xFF) / 255.0F;
-		RGBColors[1] = (float)(color >> 8 & 0xFF) / 255.0F;
-		RGBColors[2] = (float)(color & 0xFF) / 255.0F;
-
-		VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(this.getModel().getLayer(this.getTexture(mobEntity)));
-		model.setColors(RGBColors[0],RGBColors[1], RGBColors[2]);
-		leocthChecker = " ";
-		super.render(mobEntity, f, g, matrixStack, vertexConsumerProvider, i);
-
-	}
 
 
 
 	@Override
 	public Identifier getTexture(TerracottaKnightEntity mobEntity) {
+		if(mobEntity.hasCustomName()) {
+			if (mobEntity.getCustomName().equals(Text.of("fusion")) || mobEntity.getCustomName().equals(Text.of("ennui")) || mobEntity.getCustomName().equals(Text.of("boba")) || mobEntity.getCustomName().equals(Text.of("maximum")) || mobEntity.getCustomName().equals(Text.of("harpsi")) || mobEntity.getCustomName().equals(Text.of("sonatiine")) || mobEntity.getCustomName().equals(Text.of("shard"))) {
+				textureIdentifier = new Identifier(Main.MOD_ID, "textures/entities/" + mobEntity.getCustomName().getString() + ".png");
+			} else {
+				textureIdentifier = new Identifier(Main.MOD_ID, "textures/entities/terracotta_knight.png");
+			}
+		}
 		return textureIdentifier;
 	}
 }
