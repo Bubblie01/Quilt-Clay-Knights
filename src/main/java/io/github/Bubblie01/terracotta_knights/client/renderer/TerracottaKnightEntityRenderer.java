@@ -17,7 +17,7 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 public class TerracottaKnightEntityRenderer extends BipedEntityRenderer<TerracottaKnightEntity, TerracottaKnightEntityModel<TerracottaKnightEntity>> {
-	private Identifier textureIdentifier = new Identifier(Main.MOD_ID, "textures/entities/terracotta_knight.png");
+
 	public TerracottaKnightEntityRenderer(EntityRendererFactory.Context context, EntityModelLayer innerArmorLayer, EntityModelLayer outerArmorLayer) {
 		super(context, new TerracottaKnightEntityModel(context.getPart(EntityModelLayers.PLAYER), false), 0.3f);
 		this.addFeature(new ArmorFeatureRenderer(this, new BipedEntityModel(context.getPart(innerArmorLayer)), new BipedEntityModel(context.getPart(outerArmorLayer)), context.getModelManager()));
@@ -53,6 +53,7 @@ public class TerracottaKnightEntityRenderer extends BipedEntityRenderer<Terracot
 
 	@Override
 	public Identifier getTexture(TerracottaKnightEntity mobEntity) {
+		Identifier textureIdentifier = new Identifier(Main.MOD_ID, "textures/entities/terracotta_knight.png");
 		if(mobEntity.hasCustomName()) {
 			if (mobEntity.getCustomName().equals(Text.of("fusion")) || mobEntity.getCustomName().equals(Text.of("ennui")) || mobEntity.getCustomName().equals(Text.of("boba")) || mobEntity.getCustomName().equals(Text.of("maximum")) || mobEntity.getCustomName().equals(Text.of("harpsi")) || mobEntity.getCustomName().equals(Text.of("sonatiine")) || mobEntity.getCustomName().equals(Text.of("shard"))) {
 				textureIdentifier = new Identifier(Main.MOD_ID, "textures/entities/" + mobEntity.getCustomName().getString() + ".png");
