@@ -55,9 +55,6 @@ public class ItemPickupGoal extends Goal {
 				}
 			}
 		}
-		for(int i = 0; i < itemList.size(); i++) {
-			System.out.println(itemList.get(i).getName());
-		}
 		return true;
 	}
 

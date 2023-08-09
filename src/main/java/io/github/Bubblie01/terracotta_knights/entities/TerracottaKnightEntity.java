@@ -68,11 +68,16 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 
 	@Override
 	protected void loot(ItemEntity item) {
-
-
-		//System.out.println(((TinySwordItem)(item.getStack().getItem())).getAttackDamage());
-		//System.out.println(((TinySwordItem)(this.getEquippedStack(EquipmentSlot.MAINHAND).getItem())).getAttackDamage());
-		super.loot(item);
+		ItemStack itemStack = item.getStack();
+		ItemStack itemStack2 = this.tryEquip(itemStack.copy());
+		if (!itemStack2.isEmpty()) {
+			this.triggerItemPickedUpByEntityCriteria(item);
+			this.sendPickup(item, 1);
+			itemStack.decrement(1);
+			if (itemStack.isEmpty()) {
+				item.discard();
+			}
+		}
 	}
 	@Nullable
 	@Override
