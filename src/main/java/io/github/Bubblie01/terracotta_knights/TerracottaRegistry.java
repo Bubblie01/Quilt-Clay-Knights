@@ -32,7 +32,7 @@ public class TerracottaRegistry {
 	public static final ToolItem TINY_GOLD_SWORD_ITEM = new TinySwordItem(ToolMaterials.GOLD,1, -2.4F, new Item.Settings());
 	public static final ToolItem TINY_DIAMOND_SWORD_ITEM = new TinySwordItem(ToolMaterials.DIAMOND,1, -2.4F, new Item.Settings());
 	public static final ToolItem TINY_NETHERITE_SWORD_ITEM = new TinySwordItem(ToolMaterials.NETHERITE,1, -2.4F, new Item.Settings());
-	public static final TinyBowItem TINY_BOW_ITEM = new TinyBowItem(new Item.Settings());
+	public static final TinyBowItem TINY_BOW_ITEM = new TinyBowItem(new Item.Settings().maxDamage(384));
 	public static final TinyArrowItem TINY_ARROW_ITEM = new TinyArrowItem(new Item.Settings());
 	public static final SignalDeviceItem SIGNAL_DEVICE_ITEM = new SignalDeviceItem(new Item.Settings());
 	public static final TinyPitchforkItem TINY_PITCHFORK_ITEM = new TinyPitchforkItem(new Item.Settings());
@@ -65,7 +65,7 @@ public class TerracottaRegistry {
 	//recipies
 	public static SpecialRecipeSerializer<TerracottaKnightRecipe> TERRACOTTA_KNIGHT_RECIPE;
 
-	public static final EntityType<TinyArrowEntity> TINY_ARROW = Registry.register(Registries.ENTITY_TYPE, new Identifier(Main.MOD_ID, "tiny_arrow_entity"), QuiltEntityTypeBuilder.<TinyArrowEntity>create(SpawnGroup.MISC, TinyArrowEntity::new).build());
+	public static final EntityType<TinyArrowEntity> TINY_ARROW = Registry.register(Registries.ENTITY_TYPE, new Identifier(Main.MOD_ID, "tiny_arrow_entity"), QuiltEntityTypeBuilder.<TinyArrowEntity>create(SpawnGroup.MISC, TinyArrowEntity::new).setDimensions(EntityDimensions.changing(0.3f,0.3f)).build());
 	public static final EntityType<TerracottaKnightEntity> TERRACOTTA_KNIGHT = Registry.register(Registries.ENTITY_TYPE, new Identifier(Main.MOD_ID, "terracotta_knight_entity"), QuiltEntityTypeBuilder.create(SpawnGroup.MONSTER, TerracottaKnightEntity::new).setDimensions(EntityDimensions.changing(0.5f,1.2f)).build());
 	//sounds
 	public static final Identifier SIGNAL_SOUND_ID = new Identifier(Main.MOD_ID, "signal_sound");

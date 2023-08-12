@@ -50,6 +50,9 @@ public class ItemPickupGoal extends Goal {
 				else if(item.getStack().getItem() instanceof TinyBowItem && knightEntity.getEquippedStack(EquipmentSlot.MAINHAND).getItem() == Items.AIR) {
 					itemList.add(item);
 				}
+				else if(item.getStack().getItem() == Items.TNT && knightEntity.findItemInventory(Items.TNT).getCount() < 3) {
+					itemList.add(item);
+				}
 				else {
 					itemList.remove(item);
 				}

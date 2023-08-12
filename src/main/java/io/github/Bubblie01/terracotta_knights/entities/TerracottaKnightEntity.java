@@ -11,7 +11,6 @@ import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -22,27 +21,23 @@ import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
-
-import java.util.List;
 
 public class TerracottaKnightEntity extends PathAwareEntity {
 	//public static final EntityType<TerracottaKnightEntity> TERRACOTTA_KNIGHT = Registry.register(Registry.ENTITY_TYPE, new Identifier(Main.MOD_ID, "terracotta_knight_entity"),FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, TerracottaKnightEntity::new).dimensions(EntityDimensions.changing(0.5F, 1.2F)).build());
 	public static final TrackedData<Integer> COLOR = DataTracker.registerData(TerracottaKnightEntity.class, TrackedDataHandlerRegistry.INTEGER);
+	public static final TrackedData<Integer> INVENTORY = DataTracker.registerData(TerracottaKnightEntity.class, TrackedDataHandlerRegistry.INTEGER);
 	public static final TrackedData<BlockPos> POS = DataTracker.registerData(TerracottaKnightEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
-	public static final SimpleInventory terracottaKnightInventory = new SimpleInventory(5);
+	private final SimpleInventory terracottaKnightInventory = new SimpleInventory(2);
 	public DyeColor dyeColor;
 	public TerracottaKnightEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
 		super(entityType, world);
@@ -70,15 +65,37 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	protected void loot(ItemEntity item) {
 		ItemStack itemStack = item.getStack();
 		ItemStack itemStack2 = this.tryEquip(itemStack.copy());
-		if (!itemStack2.isEmpty()) {
+
+		if(!itemStack2.isEmpty() && itemStack2.getItem() != Items.TNT) {
 			this.triggerItemPickedUpByEntityCriteria(item);
-			this.sendPickup(item, 1);
-			itemStack.decrement(1);
+			this.sendPickup(item, itemStack2.getCount());
+			itemStack.decrement(itemStack2.getCount());
 			if (itemStack.isEmpty()) {
 				item.discard();
 			}
 		}
-	}
+		else if(itemStack2.getItem() == Items.TNT) {
+			this.triggerItemPickedUpByEntityCriteria(item);
+			int i = itemStack.getCount();
+			ItemStack itemStack3 = terracottaKnightInventory.addStack(itemStack);
+			this.sendPickup(item, i - itemStack3.getCount());
+			if (itemStack3.isEmpty()) {
+				item.discard();
+			} else {
+				itemStack.setCount(itemStack3.getCount());
+			}
+			if(this.findItemInventory(Items.TNT).getCount() >= 3) {
+				int temp = this.findItemInventory(Items.TNT).getCount();
+				int temp2 = temp - 3;
+				this.terracottaKnightInventory.removeItem(Items.TNT, temp2);
+				ItemStack itemStack4 = Items.TNT.getDefaultStack();
+				itemStack4.setCount(temp2);
+				this.dropStack(itemStack4);
+				}
+			}
+			this.setTntCount(this.findItemInventory(Items.TNT).getCount());
+		}
+
 	@Nullable
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
@@ -106,13 +123,38 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 				ItemStack itemStack2 = equipment.withCount(1);
 				this.equipStack(equipmentSlot, itemStack2);
 				return itemStack2;
-			} else {
+			}
+			else if(equipment.getItem() == TerracottaRegistry.TINY_BOW_ITEM && equipment.getCount() > 1) {
+				ItemStack itemStack2 = equipment.withCount(1);
+				this.equipLootStack(equipmentSlot, itemStack2);
+				return itemStack2;
+			}
+			else if(equipment.getItem() == Items.TNT) {
+				return equipment;
+			}
+			else {
 				this.equipLootStack(equipmentSlot, equipment);
 				return equipment;
 			}
-		} else {
+		}
+		else {
 			return ItemStack.EMPTY;
 		}
+
+	}
+
+	public ItemStack findItemInventory(Item item) {
+		for(int i = terracottaKnightInventory.size() - 1; i >= 0; --i) {
+			ItemStack itemStack = terracottaKnightInventory.getStack(i);
+			if(itemStack.getItem().equals(item)) {
+				return itemStack;
+			}
+		}
+		return ItemStack.EMPTY;
+	}
+
+	public SimpleInventory getInventory() {
+		return terracottaKnightInventory;
 	}
 	@Override
 	public void onDeath(DamageSource source) {
@@ -124,6 +166,10 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 			item.setColor(stack, this.getColor());
 			this.dropStack(stack);
 		}
+		for(int i = 0; i < terracottaKnightInventory.size(); i++) {
+			this.dropStack(terracottaKnightInventory.getStack(i));
+		}
+
 	}
 
 	public boolean prefersNewEquipment(ItemStack newStack, ItemStack oldStack) {
@@ -186,6 +232,11 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 		if(stack.getItem() instanceof TerracottaItemFlag) {
 			return true;
 		}
+		else if(stack.getItem() == Items.TNT) {
+			if(findItemInventory(Items.TNT).getCount() < 3) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -209,7 +260,9 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	protected void initDataTracker() {
 		super.initDataTracker();
 		this.dataTracker.startTracking(COLOR, 0);
+		this.dataTracker.startTracking(INVENTORY, 0);
 	}
+
 
 	public int getColor() {
 		return this.dataTracker.get(COLOR);
@@ -217,6 +270,14 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 
 	public void setColor(int color) {
 		this.dataTracker.set(COLOR, color);
+	}
+
+	public void setTntCount(int count) {
+		this.dataTracker.set(INVENTORY, count);
+	}
+
+	public int getTntCount() {
+		return this.dataTracker.get(INVENTORY);
 	}
 
 	@Override
@@ -227,6 +288,8 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	@Override
 	public NbtCompound writeNbt(NbtCompound nbt) {
 		nbt.putInt("Color",this.dataTracker.get(COLOR));
+		nbt.put("Inventory", terracottaKnightInventory.toNbtList());
+
 		return super.writeNbt(nbt);
 	}
 
@@ -235,6 +298,11 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 		if(nbt.getInt("Color") != 0) {
 			setColor(nbt.getInt("Color"));
 		}
+		if (nbt.contains("Inventory", NbtElement.LIST_TYPE)) {
+			terracottaKnightInventory.readNbtList(nbt.getList("Inventory", NbtElement.COMPOUND_TYPE));
+			this.dataTracker.set(INVENTORY, this.findItemInventory(Items.TNT).getCount());
+		}
+
 		super.readNbt(nbt);
 	}
 
@@ -256,11 +324,29 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 		}
 
 		if(itemCopy.getItem() instanceof TinyBowItem) {
+			itemCopy.setCount(1);
 			this.dropStack(this.getEquippedStack(EquipmentSlot.MAINHAND));
 			//this.equipStack(EquipmentSlot.MAINHAND, Items.AIR.getDefaultStack());
 			this.equipLootStack(EquipmentSlot.MAINHAND, itemCopy);
 			if(!player.isCreative())
 				item.decrement(1);
+		}
+
+		if(itemCopy.getItem() == Items.TNT) {
+			if (this.findItemInventory(Items.TNT).getCount() < 3) {
+				if(!this.getWorld().isClient) {
+					itemCopy.setCount(1);
+					if (terracottaKnightInventory.canInsert(itemCopy)) {
+						terracottaKnightInventory.addStack(itemCopy);
+						this.setTntCount(this.findItemInventory(Items.TNT).getCount());
+						if (!player.isCreative())
+							item.decrement(1);
+					}
+				}
+				else {
+					player.swingHand(hand);
+				}
+			}
 		}
 
 		if(itemCopy.getItem() instanceof TinyArmorItem) {

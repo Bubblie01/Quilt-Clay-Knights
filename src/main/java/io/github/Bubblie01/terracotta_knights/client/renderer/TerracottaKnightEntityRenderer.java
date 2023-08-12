@@ -11,16 +11,26 @@ import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
+import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Axis;
 import org.jetbrains.annotations.Nullable;
 
 public class TerracottaKnightEntityRenderer extends BipedEntityRenderer<TerracottaKnightEntity, TerracottaKnightEntityModel<TerracottaKnightEntity>> {
 
+	private ItemRenderer itemRenderer;
+
 	public TerracottaKnightEntityRenderer(EntityRendererFactory.Context context, EntityModelLayer innerArmorLayer, EntityModelLayer outerArmorLayer) {
 		super(context, new TerracottaKnightEntityModel(context.getPart(EntityModelLayers.PLAYER), false), 0.3f);
 		this.addFeature(new ArmorFeatureRenderer(this, new BipedEntityModel(context.getPart(innerArmorLayer)), new BipedEntityModel(context.getPart(outerArmorLayer)), context.getModelManager()));
+		this.addFeature(new TNTHeadFeatureRenderer<>(this, context.getItemRenderer()));
+		itemRenderer = context.getItemRenderer();
 	}
 
 
@@ -37,16 +47,15 @@ public class TerracottaKnightEntityRenderer extends BipedEntityRenderer<Terracot
 	}
 
 	@Override
-	public void render(TerracottaKnightEntity mobEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+	public void render(TerracottaKnightEntity mobEntity, float f, float g, MatrixStack matrices, VertexConsumerProvider vertexConsumerProvider, int i) {
 			int color = mobEntity.getDataTracker().get(TerracottaKnightEntity.COLOR);
 			float RGBColors[] = new float[3];
 			RGBColors[0] = (float) (color >> 16 & 0xFF) / 255.0F;
 			RGBColors[1] = (float) (color >> 8 & 0xFF) / 255.0F;
 			RGBColors[2] = (float) (color & 0xFF) / 255.0F;
-
 			VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(this.getModel().getLayer(this.getTexture(mobEntity)));
 			model.setColors(RGBColors[0], RGBColors[1], RGBColors[2]);
-			super.render(mobEntity, f, g, matrixStack, vertexConsumerProvider, i);
+			super.render(mobEntity, f, g, matrices, vertexConsumerProvider, i);
 		}
 
 
