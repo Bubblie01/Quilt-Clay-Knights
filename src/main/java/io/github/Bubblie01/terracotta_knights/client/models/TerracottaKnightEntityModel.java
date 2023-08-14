@@ -11,6 +11,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.util.Arm;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class TerracottaKnightEntityModel<T extends PathAwareEntity> extends PlayerEntityModel<TerracottaKnightEntity> {
 	private float r, g, b;
 

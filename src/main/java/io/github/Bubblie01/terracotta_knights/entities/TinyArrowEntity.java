@@ -15,6 +15,7 @@ import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
 
 import static io.github.Bubblie01.terracotta_knights.TerracottaRegistry.TINY_ARROW_ITEM;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class TinyArrowEntity extends PersistentProjectileEntity {
 	//public static final EntityType<TinyArrowEntity> TINY_ARROW = EntityTypeAccessor.callRegister("tiny_arrow", EntityType.Builder.create(TinyArrowEntity::new, SpawnGroup.MISC));
 

@@ -17,6 +17,7 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.core.jmx.Server;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class TerracottaKnightItem extends Item implements DyeableItem {
 	public TerracottaKnightItem(Settings settings) {
 		super(settings);

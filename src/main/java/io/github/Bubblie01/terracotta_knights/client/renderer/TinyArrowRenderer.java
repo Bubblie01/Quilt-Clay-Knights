@@ -7,6 +7,7 @@ import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class TinyArrowRenderer extends ProjectileEntityRenderer<TinyArrowEntity> {
 
 	public static final Identifier TEXTURE = new Identifier("textures/entity/projectiles/arrow.png");

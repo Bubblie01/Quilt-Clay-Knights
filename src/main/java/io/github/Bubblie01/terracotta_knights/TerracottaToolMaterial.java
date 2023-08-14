@@ -3,6 +3,7 @@ package io.github.Bubblie01.terracotta_knights;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class TerracottaToolMaterial implements ToolMaterial {
 
 	public static final TerracottaToolMaterial INSTANCE = new TerracottaToolMaterial();

@@ -2,11 +2,13 @@ package io.github.Bubblie01.terracotta_knights.entities;
 
 import io.github.Bubblie01.terracotta_knights.*;
 import io.github.Bubblie01.terracotta_knights.entities.ai.ItemPickupGoal;
+import io.github.Bubblie01.terracotta_knights.entities.ai.RunAwayFromEntityGoal;
 import io.github.Bubblie01.terracotta_knights.entities.ai.TerracottaKnightAttackGoal;
 import io.github.Bubblie01.terracotta_knights.items.*;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -32,6 +34,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class TerracottaKnightEntity extends PathAwareEntity {
 	//public static final EntityType<TerracottaKnightEntity> TERRACOTTA_KNIGHT = Registry.register(Registry.ENTITY_TYPE, new Identifier(Main.MOD_ID, "terracotta_knight_entity"),FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, TerracottaKnightEntity::new).dimensions(EntityDimensions.changing(0.5F, 1.2F)).build());
 	public static final TrackedData<Integer> COLOR = DataTracker.registerData(TerracottaKnightEntity.class, TrackedDataHandlerRegistry.INTEGER);
@@ -52,7 +55,8 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 		this.goalSelector.add(0, new TerracottaKnightAttackGoal(this, 30.0f, 2.0f));
 		this.goalSelector.add(1, new WanderAroundFarGoal(this,0.5f));
 		this.goalSelector.add(2, new LookAroundGoal(this));
-		this.goalSelector.add(1, new ItemPickupGoal(this, 5.0f));
+		this.goalSelector.add(1, new ItemPickupGoal(this, 7.0f));
+		this.goalSelector.add(2, new RunAwayFromEntityGoal(this, 15.0f));
 		super.initGoals();
 	}
 

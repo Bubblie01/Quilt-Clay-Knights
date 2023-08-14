@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class TerracottaKnightRecipe extends SpecialCraftingRecipe {
 
 	public TerracottaKnightRecipe(Identifier identifier, CraftingCategory craftingCategory) {

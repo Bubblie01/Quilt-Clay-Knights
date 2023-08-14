@@ -15,9 +15,12 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.Axis;
+import net.minecraft.util.random.RandomGenerator;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class TNTHeadFeatureRenderer <T extends TerracottaKnightEntity, M extends EntityModel<T> & ModelWithArms> extends FeatureRenderer<T, M> {
 	private ItemRenderer itemRenderer;
+	private static final RandomGenerator random = RandomGenerator.createLegacy();
 	public TNTHeadFeatureRenderer(FeatureRendererContext<T, M> context, ItemRenderer itemRenderer) {
 		super(context);
 		this.itemRenderer = itemRenderer;
@@ -25,19 +28,20 @@ public class TNTHeadFeatureRenderer <T extends TerracottaKnightEntity, M extends
 
 	@Override
 	public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, T mobEntity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-			matrices.push();
+			random.setSeed(mobEntity.getId());
 			ItemStack itemStack = Items.TNT.getDefaultStack();
 			itemStack.setCount(mobEntity.getTntCount());
-				BakedModel model = this.itemRenderer.getHeldItemModel(itemStack, mobEntity.getWorld(), mobEntity, mobEntity.getId());
-				//matrices.multiply(Axis.Y_POSITIVE.rotationDegrees(180.0F));
-				matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-180F));
-				for (int j = 0; j < itemStack.getCount(); j++) {
-					if(itemStack.getCount() == 1)
-						matrices.translate(0, 1f, 0);
-					else
-						matrices.translate(0, (itemStack.getCount()) / 2, 0);
-					this.itemRenderer.renderItem(itemStack, ModelTransformationMode.HEAD, false, matrices, vertexConsumers, light, OverlayTexture.DEFAULT_UV, model);
-				}
-			matrices.pop();
-	}
+			BakedModel model = this.itemRenderer.getHeldItemModel(itemStack, mobEntity.getWorld(), mobEntity, mobEntity.getId());
+			matrices.multiply(Axis.X_POSITIVE.rotationDegrees(-180F));
+			for (int j = 0; j < itemStack.getCount(); j++) {
+				matrices.multiply(Axis.Y_POSITIVE.rotation(random.nextFloat()));
+				if(itemStack.getCount() == 1)
+					matrices.translate(0, 1f, 0);
+				else
+					matrices.translate(0, (itemStack.getCount()) / 2, 0);
+				matrices.push();
+				this.itemRenderer.renderItem(itemStack, ModelTransformationMode.HEAD, false, matrices, vertexConsumers, light, OverlayTexture.DEFAULT_UV, model);
+				matrices.pop();
+			}
+		}
 }

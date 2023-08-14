@@ -13,6 +13,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.world.World;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class TinyBowItem extends BowItem implements TerracottaItemFlag{
 	public TinyBowItem(Settings settings) {
 		super(settings);

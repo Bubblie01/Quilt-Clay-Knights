@@ -22,6 +22,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Axis;
 import org.jetbrains.annotations.Nullable;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class TerracottaKnightEntityRenderer extends BipedEntityRenderer<TerracottaKnightEntity, TerracottaKnightEntityModel<TerracottaKnightEntity>> {
 
 	private ItemRenderer itemRenderer;

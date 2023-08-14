@@ -9,6 +9,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class TinySwordItem extends SwordItem implements TerracottaItemFlag {
 
 	private final float attackDamage;

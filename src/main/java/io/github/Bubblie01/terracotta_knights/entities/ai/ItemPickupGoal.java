@@ -18,6 +18,7 @@ import net.minecraft.util.math.Box;
 import java.util.ArrayList;
 import java.util.List;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class ItemPickupGoal extends Goal {
 
 	private final TerracottaKnightEntity knightEntity;
@@ -64,11 +65,11 @@ public class ItemPickupGoal extends Goal {
 	@Override
 	public void tick() {
 		if(knightEntity != null && itemList.size() > 0) {
-				for(int i = 0; i < itemList.size(); i++) {
-					Path path = knightEntity.getNavigation().findPathTo(itemList.get(i), 0);
-					knightEntity.getNavigation().startMovingAlong(path, 0.5f);
-					itemList.remove(i);
-				}
+			for(int i = 0; i < itemList.size(); i++) {
+				Path path = knightEntity.getNavigation().findPathTo(itemList.get(i), 0);
+				knightEntity.getNavigation().startMovingAlong(path, 0.5f);
+				itemList.remove(i);
+			}
 		}
 		super.tick();
 	}

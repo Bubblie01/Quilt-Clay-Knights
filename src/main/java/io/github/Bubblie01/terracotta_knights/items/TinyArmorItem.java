@@ -9,6 +9,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class TinyArmorItem extends ArmorItem implements TerracottaItemFlag {
 
 	public TinyArmorItem(ArmorMaterial material, ArmorSlot slot, Settings settings) {

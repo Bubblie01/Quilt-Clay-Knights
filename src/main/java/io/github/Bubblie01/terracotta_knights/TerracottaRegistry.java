@@ -18,6 +18,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import org.quiltmc.qsl.entity.api.QuiltEntityTypeBuilder;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class TerracottaRegistry {
 
 	//Item group

@@ -17,6 +17,7 @@ import net.minecraft.world.event.GameEvent;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class Main implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod name as the logger's name.

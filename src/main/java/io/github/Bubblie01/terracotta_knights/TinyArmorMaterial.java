@@ -14,6 +14,7 @@ import org.quiltmc.loader.api.minecraft.ClientOnly;
 
 import java.util.EnumMap;
 
+//Code Created by Bubblie01 Under MPL 2.0 License
 public class TinyArmorMaterial implements ArmorMaterial {
 
 	public static final TinyArmorMaterial TINY_CHAINMAIL = new TinyArmorMaterial("tiny_chainmail", 15, Util.make(new EnumMap(ArmorItem.ArmorSlot.class), map -> {
