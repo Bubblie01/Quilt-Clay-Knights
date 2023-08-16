@@ -365,7 +365,7 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 				item.decrement(1);
 		}
 
-		System.out.println(terracottaKnightInventory.stacks);
+		//System.out.println(terracottaKnightInventory.stacks);
 
 		this.swingHand(Hand.MAIN_HAND);
 		return super.interactMob(player, hand);
