@@ -8,7 +8,8 @@
     "ItemEntityRendererMixin",
     "ItemRendererMixin",
     "MobEntityMixin",
-    "ClientPlayNetworkHandlerMixin"
+    "ClientPlayNetworkHandlerMixin",
+    "TntEntityMixin"
   ],
   "client": [
     "TitleScreenMixin"

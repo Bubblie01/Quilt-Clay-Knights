@@ -35,31 +35,30 @@ public class ItemPickupGoal extends Goal {
 	public boolean canStart() {
 		searchBox = knightEntity.getBoundingBox().expand((double)searchRange,(double)searchRange,(double)searchRange);
 		List<ItemEntity> tempList = knightEntity.getWorld().getEntitiesByClass(ItemEntity.class, searchBox, knightEntity -> knightEntity != null);
-		for(int i = 0; i < tempList.size(); i++) {
-			ItemEntity item = tempList.get(i);
-			if(this.knightEntity.getVisibilityCache().canSee(item)) {
-				if(item.getStack().getItem() instanceof TinySwordItem) {
-					if(item.getStack().getItem() != TerracottaRegistry.TINY_BOW_ITEM)
-						if(this.knightEntity.prefersNewEquipment(item.getStack(), this.knightEntity.getEquippedStack(EquipmentSlot.MAINHAND)))
-							itemList.add(item);
+		if(tempList.size() > 0) {
+			for (int i = 0; i < tempList.size(); i++) {
+				ItemEntity item = tempList.get(i);
+				if (this.knightEntity.getVisibilityCache().canSee(item)) {
+					if (item.getStack().getItem() instanceof TinySwordItem) {
+						if (item.getStack().getItem() != TerracottaRegistry.TINY_BOW_ITEM)
+							if (this.knightEntity.prefersNewEquipment(item.getStack(), this.knightEntity.getEquippedStack(EquipmentSlot.MAINHAND)))
+								itemList.add(item);
 
-				}
-				else if(item.getStack().getItem() instanceof TinyArmorItem) {
-					if (this.knightEntity.prefersNewEquipment(item.getStack(), this.knightEntity.getEquippedStack(((TinyArmorItem) item.getStack().getItem()).getPreferredSlot())))
+					} else if (item.getStack().getItem() instanceof TinyArmorItem) {
+						if (this.knightEntity.prefersNewEquipment(item.getStack(), this.knightEntity.getEquippedStack(((TinyArmorItem) item.getStack().getItem()).getPreferredSlot())))
+							itemList.add(item);
+					} else if (item.getStack().getItem() instanceof TinyBowItem && knightEntity.getEquippedStack(EquipmentSlot.MAINHAND).getItem() == Items.AIR) {
 						itemList.add(item);
-				}
-				else if(item.getStack().getItem() instanceof TinyBowItem && knightEntity.getEquippedStack(EquipmentSlot.MAINHAND).getItem() == Items.AIR) {
-					itemList.add(item);
-				}
-				else if(item.getStack().getItem() == Items.TNT && knightEntity.findItemInventory(Items.TNT).getCount() < 3) {
-					itemList.add(item);
-				}
-				else {
-					itemList.remove(item);
+					} else if (item.getStack().getItem() == Items.TNT && knightEntity.findItemInventory(Items.TNT).getCount() < 3) {
+						itemList.add(item);
+					} else {
+						itemList.remove(item);
+					}
 				}
 			}
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	@Override

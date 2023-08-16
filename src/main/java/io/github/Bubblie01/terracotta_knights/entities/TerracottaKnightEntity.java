@@ -78,7 +78,7 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 				item.discard();
 			}
 		}
-		else if(itemStack2.getItem() == Items.TNT) {
+		if(itemStack2.getItem() == Items.TNT) {
 			this.triggerItemPickedUpByEntityCriteria(item);
 			int i = itemStack.getCount();
 			ItemStack itemStack3 = terracottaKnightInventory.addStack(itemStack);
@@ -96,8 +96,8 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 				itemStack4.setCount(temp2);
 				this.dropStack(itemStack4);
 				}
-			}
 			this.setTntCount(this.findItemInventory(Items.TNT).getCount());
+			}
 		}
 
 	@Nullable
@@ -109,7 +109,7 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	@Nullable
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.BLOCK_CALCITE_BREAK;
+		return SoundEvents.BLOCK_DECORATED_POT_BREAK;
 	}
 
 	@Override
@@ -117,6 +117,10 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 		EquipmentSlot equipmentSlot = getPreferredEquipmentSlot(equipment);
 		ItemStack itemStack = this.getEquippedStack(equipmentSlot);
 		boolean bl = this.prefersNewEquipment(equipment, itemStack);
+		if(equipment.getItem() == Items.TNT) {
+			ItemStack itemStack2 = equipment.copy();
+			return itemStack2;
+		}
 		if (bl && this.canPickupItem(equipment)) {
 			double d = (double)this.getDropChance(equipmentSlot);
 			if (!itemStack.isEmpty() && (double)Math.max(this.random.nextFloat() - 0.1F, 0.0F) < d) {
@@ -133,9 +137,6 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 				this.equipLootStack(equipmentSlot, itemStack2);
 				return itemStack2;
 			}
-			else if(equipment.getItem() == Items.TNT) {
-				return equipment;
-			}
 			else {
 				this.equipLootStack(equipmentSlot, equipment);
 				return equipment;
@@ -144,6 +145,7 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 		else {
 			return ItemStack.EMPTY;
 		}
+
 
 	}
 
@@ -317,6 +319,8 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 		if(itemCopy.getItem() instanceof DyeItem) {
 			dyeColor = ((DyeItem) itemCopy.getItem()).getColor();
 			this.dataTracker.set(COLOR, (dyeColor.getMapColor().color));
+			if(!player.isCreative())
+				item.decrement(1);
 		}
 
 		if(itemCopy.getItem() instanceof TinySwordItem) {
@@ -360,6 +364,8 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 			if(!player.isCreative())
 				item.decrement(1);
 		}
+
+		System.out.println(terracottaKnightInventory.stacks);
 
 		this.swingHand(Hand.MAIN_HAND);
 		return super.interactMob(player, hand);
