@@ -3,13 +3,17 @@
   "key": {
     "I": {
       "item": "minecraft:iron_nugget"
+    },
+    "S": {
+      "item": "minecraft:stick"
     }
   },
   "pattern": [
-    "I I",
-    "I I"
+    "I",
+    "I",
+    "S"
   ],
   "result": {
-    "item": "terracotta_knights:tiny_iron_boots"
+    "item": "terracotta_knights:tiny_iron_sword_item"
   }
 }

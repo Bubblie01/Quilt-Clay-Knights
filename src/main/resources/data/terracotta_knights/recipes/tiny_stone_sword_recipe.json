@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "tag": "minecraft:stone_buttons"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "B",
+    "B",
+    "S"
+  ],
+  "result": {
+    "item": "terracotta_knights:tiny_stone_sword_item"
+  }
+}

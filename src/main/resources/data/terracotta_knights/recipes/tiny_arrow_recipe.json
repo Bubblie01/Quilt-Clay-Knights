@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "R": {
+      "item": "minecraft:flint"
+    },
+    "F": {
+      "item": "minecraft:feather"
+    }
+  },
+  "pattern": [
+    "R",
+    "F"
+  ],
+  "result": {
+    "item": "terracotta_knights:tiny_arrow",
+    "count": 4
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": {
+      "item": "minecraft:gold_nugget"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "G",
+    "G",
+    "S"
+  ],
+  "result": {
+    "item": "terracotta_knights:tiny_gold_sword_item"
+  }
+}
