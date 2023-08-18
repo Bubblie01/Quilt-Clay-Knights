@@ -13,18 +13,22 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 //Code Created by Bubblie01 Under MPL 2.0 License
 public class ItemPickupGoal extends Goal {
 
 	private final TerracottaKnightEntity knightEntity;
-
+	private boolean reached;
 	private List<ItemEntity> itemList = new ArrayList<ItemEntity>();
 	private Box searchBox;
+	private Random random = new Random();
+	private ItemEntity randomItem;
 	private final float searchRange;
 
 	public ItemPickupGoal(TerracottaKnightEntity knightEntity, float searchRange) {
@@ -56,25 +60,45 @@ public class ItemPickupGoal extends Goal {
 					}
 				}
 			}
+			if(itemList.size() != 0 && knightEntity.getEntityTarget() == null) {
+				int random = (int) (Math.random() * itemList.size());
+				knightEntity.setEntityTarget(itemList.get(random));
+			}
+			itemList.clear();
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public void tick() {
-		if(knightEntity != null && itemList.size() > 0) {
-			for(int i = 0; i < itemList.size(); i++) {
-				Path path = knightEntity.getNavigation().findPathTo(itemList.get(i), 0);
-				knightEntity.getNavigation().startMovingAlong(path, 0.5f);
-				itemList.remove(i);
-			}
-		}
-		super.tick();
+	public void start() {
+		//System.out.println(itemList.size());
+		//this.randomItem = itemList.get((int) (itemList.size()) + 1);
 	}
 
 	@Override
+	public void tick() {
+		if(knightEntity != null && knightEntity.getEntityTarget() != null) {
+			Path path = knightEntity.getNavigation().findPathTo(knightEntity.getEntityTarget(), 0);
+			knightEntity.getNavigation().startMovingAlong(path, 0.5f);
+			BlockPos blockPos = knightEntity.getEntityTarget().getBlockPos();
+				if (blockPos.isCenterWithinDistance(knightEntity.getPos(), 1.0))
+					knightEntity.setEntityTarget(null);
+				//itemList.remove(knightEntity.getEntityTarget());
+			}
+		}
+
+	@Override
 	public boolean canStop() {
-		return super.canStop();
+		BlockPos pos = randomItem.getBlockPos();
+		if(pos.isCenterWithinDistance(knightEntity.getPos(), 1.0)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void stop() {
+		knightEntity.getNavigation().stop();
 	}
 }

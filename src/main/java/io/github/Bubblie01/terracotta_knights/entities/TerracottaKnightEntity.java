@@ -42,6 +42,8 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	public static final TrackedData<BlockPos> POS = DataTracker.registerData(TerracottaKnightEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
 	private final SimpleInventory terracottaKnightInventory = new SimpleInventory(2);
 	public DyeColor dyeColor;
+
+	private Entity entityTarget;
 	public TerracottaKnightEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
 		super(entityType, world);
 	}
@@ -147,6 +149,14 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 		}
 
 
+	}
+
+	public Entity getEntityTarget() {
+		return entityTarget;
+	}
+
+	public void setEntityTarget(Entity entityTarget) {
+		this.entityTarget = entityTarget;
 	}
 
 	public ItemStack findItemInventory(Item item) {
