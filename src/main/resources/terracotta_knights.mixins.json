@@ -9,7 +9,9 @@
     "ItemRendererMixin",
     "MobEntityMixin",
     "ClientPlayNetworkHandlerMixin",
-    "TntEntityMixin"
+    "TntEntityMixin",
+    "ItemAccessorMixin",
+    "AnvilScreenHandlerMixin"
   ],
   "client": [
     "TitleScreenMixin"

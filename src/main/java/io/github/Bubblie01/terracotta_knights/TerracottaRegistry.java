@@ -1,11 +1,11 @@
 package io.github.Bubblie01.terracotta_knights;
 
+import io.github.Bubblie01.terracotta_knights.entities.TerracottaHorseEntity;
 import io.github.Bubblie01.terracotta_knights.entities.TerracottaKnightEntity;
 import io.github.Bubblie01.terracotta_knights.entities.TinyArrowEntity;
 import io.github.Bubblie01.terracotta_knights.items.*;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -26,6 +26,7 @@ public class TerracottaRegistry {
 	public static final Identifier TERRACOTTA_KNIGHT_ITEM_GROUP = new Identifier(Main.MOD_ID, "terracotta_knights");
 	//Items
 	public static final TerracottaKnightItem TERRACOTTA_KNIGHT_ITEM = new TerracottaKnightItem(new Item.Settings());
+	public static final TerracottaHorseItem TERRACOTTA_HORSE_ITEM = new TerracottaHorseItem(new Item.Settings());
 	public static final Item CLAY_KNIGHT_ITEM = new TerracottaKnightItem(new Item.Settings());
 	public static final ToolItem TINY_WOODEN_SWORD_ITEM = new TinySwordItem(ToolMaterials.WOOD,1, -2.4F, new Item.Settings());
 	public static final ToolItem TINY_STONE_SWORD_ITEM = new TinySwordItem(ToolMaterials.STONE,1, -2.4F, new Item.Settings());
@@ -63,11 +64,10 @@ public class TerracottaRegistry {
 	public static final Item TINY_NETHERITE_CHESTPLATE = new TinyArmorItem(TinyArmorMaterial.TINY_NETHERITE, ArmorItem.ArmorSlot.CHESTPLATE, new Item.Settings());
 	public static final Item TINY_NETHERITE_LEGGINGS = new TinyArmorItem(TinyArmorMaterial.TINY_NETHERITE, ArmorItem.ArmorSlot.LEGGINGS, new Item.Settings());
 	public static final Item TINY_NETHERITE_BOOTS = new TinyArmorItem(TinyArmorMaterial.TINY_NETHERITE, ArmorItem.ArmorSlot.BOOTS, new Item.Settings());
-	//recipies
-	public static SpecialRecipeSerializer<TerracottaKnightRecipe> TERRACOTTA_KNIGHT_RECIPE;
 
 	public static final EntityType<TinyArrowEntity> TINY_ARROW = Registry.register(Registries.ENTITY_TYPE, new Identifier(Main.MOD_ID, "tiny_arrow_entity"), QuiltEntityTypeBuilder.<TinyArrowEntity>create(SpawnGroup.MISC, TinyArrowEntity::new).setDimensions(EntityDimensions.changing(0.3f,0.3f)).build());
 	public static final EntityType<TerracottaKnightEntity> TERRACOTTA_KNIGHT = Registry.register(Registries.ENTITY_TYPE, new Identifier(Main.MOD_ID, "terracotta_knight_entity"), QuiltEntityTypeBuilder.create(SpawnGroup.MONSTER, TerracottaKnightEntity::new).setDimensions(EntityDimensions.changing(0.5f,1.2f)).build());
+	public static final EntityType<TerracottaHorseEntity> TERRACOTTA_HORSE = Registry.register(Registries.ENTITY_TYPE, new Identifier(Main.MOD_ID, "terracotta_horse_entity"), QuiltEntityTypeBuilder.create(SpawnGroup.MONSTER, TerracottaHorseEntity::new).setDimensions(EntityDimensions.changing(0.5f, 1.3F)).build());
 	//sounds
 	public static final Identifier SIGNAL_SOUND_ID = new Identifier(Main.MOD_ID, "signal_sound");
 	public static final SoundEvent SIGNAL_SOUND_EVENT = SoundEvent.createVariableRangeEvent(SIGNAL_SOUND_ID);
@@ -80,6 +80,7 @@ public class TerracottaRegistry {
 				.entries((display, entries) -> {
 					entries.addItem(CLAY_KNIGHT_ITEM);
 					entries.addItem(TERRACOTTA_KNIGHT_ITEM);
+					entries.addItem(TERRACOTTA_HORSE_ITEM);
 					entries.addItem(SIGNAL_DEVICE_ITEM);
 					entries.addItem(TINY_BOW_ITEM);
 					entries.addItem(TINY_ARROW_ITEM);
@@ -114,6 +115,7 @@ public class TerracottaRegistry {
 
 		Registry.register(Registries.ITEM, new Identifier(Main.MOD_ID, "terracotta_knight"), TERRACOTTA_KNIGHT_ITEM);
 		Registry.register(Registries.ITEM, new Identifier(Main.MOD_ID, "clay_knight"), CLAY_KNIGHT_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(Main.MOD_ID, "terracotta_horse"), TERRACOTTA_HORSE_ITEM);
 
 		Registry.register(Registries.ITEM, new Identifier(Main.MOD_ID, "tiny_wooden_sword_item"), TINY_WOODEN_SWORD_ITEM);
 		Registry.register(Registries.ITEM, new Identifier(Main.MOD_ID, "tiny_stone_sword_item"), TINY_STONE_SWORD_ITEM);
@@ -157,12 +159,10 @@ public class TerracottaRegistry {
 
 	}
 
-	public static void registerRecipies() {
-		TERRACOTTA_KNIGHT_RECIPE = Registry.register(Registries.RECIPE_SERIALIZER, new Identifier(Main.MOD_ID, "crafting_special_terracotta_knight_recipe") , new SpecialRecipeSerializer<>(TerracottaKnightRecipe::new));
-	}
 
 	public static void registerColors() {
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> ((DyeableItem)stack.getItem()).getColor(stack), TERRACOTTA_KNIGHT_ITEM);
+		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> ((DyeableItem)stack.getItem()).getColor(stack), TERRACOTTA_HORSE_ITEM);
 	}
 
 	public static void registerSounds() {

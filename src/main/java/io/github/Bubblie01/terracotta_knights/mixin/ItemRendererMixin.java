@@ -2,6 +2,7 @@ package io.github.Bubblie01.terracotta_knights.mixin;
 
 import io.github.Bubblie01.terracotta_knights.Main;
 import io.github.Bubblie01.terracotta_knights.TerracottaRegistry;
+import io.github.Bubblie01.terracotta_knights.items.TerracottaItemFlag;
 import io.github.Bubblie01.terracotta_knights.items.TinySwordItem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -46,9 +47,8 @@ public abstract class ItemRendererMixin {
 
 	@Inject(method = "Lnet/minecraft/client/render/item/ItemRenderer;renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/world/World;III)V", at = @At("HEAD"))
 	private void terracotta$_scaleTinyItem(LivingEntity entity, ItemStack item, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, World world, int light, int overlay, int seed, CallbackInfo ci) {
-		if((item.getItem() instanceof TinySwordItem || item.getItem() == TerracottaRegistry.TINY_BOW_ITEM || item.getItem() == TerracottaRegistry.TINY_ARROW_ITEM) && (entity instanceof PlayerEntity)) {
+		if((item.getItem() instanceof TerracottaItemFlag && (entity instanceof PlayerEntity))) {
 			matrices.scale(0.5f,0.5f,0.5f);
-
 		}
 	}
 

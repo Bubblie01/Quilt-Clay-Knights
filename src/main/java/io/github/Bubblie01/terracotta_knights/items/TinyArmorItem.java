@@ -1,5 +1,6 @@
 package io.github.Bubblie01.terracotta_knights.items;
 
+import io.github.Bubblie01.terracotta_knights.mixin.ItemAccessorMixin;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
@@ -14,10 +15,17 @@ public class TinyArmorItem extends ArmorItem implements TerracottaItemFlag {
 
 	public TinyArmorItem(ArmorMaterial material, ArmorSlot slot, Settings settings) {
 		super(material, slot, settings);
+		((ItemAccessorMixin)this).setMaxDamage(0);
+		((ItemAccessorMixin)this).setMaxCount(64);
 	}
 
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		return TypedActionResult.success(user.getStackInHand(hand));
+	}
+
+	@Override
+	public boolean isDamageable() {
+		return false;
 	}
 }

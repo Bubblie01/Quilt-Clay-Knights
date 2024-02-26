@@ -1,5 +1,6 @@
 package io.github.Bubblie01.terracotta_knights;
 
+import io.github.Bubblie01.terracotta_knights.client.renderer.TerracottaHorseEntityRenderer;
 import io.github.Bubblie01.terracotta_knights.client.renderer.TerracottaKnightEntityRenderer;
 import io.github.Bubblie01.terracotta_knights.client.renderer.TinyArrowRenderer;
 import io.github.Bubblie01.terracotta_knights.client.models.TinyPitchforkEntityModel;
@@ -26,6 +27,11 @@ public class ClientInitializer implements ClientModInitializer {
 		EntityRendererRegistry.register(TerracottaRegistry.TERRACOTTA_KNIGHT, ((context -> {
 			return new TerracottaKnightEntityRenderer(context, EntityModelLayers.PLAYER_INNER_ARMOR, EntityModelLayers.PLAYER_OUTER_ARMOR);
 		})));
+
+		EntityRendererRegistry.register(TerracottaRegistry.TERRACOTTA_HORSE, ((context -> {
+			return new TerracottaHorseEntityRenderer(context);
+		})));
+
 		ModelPredicateProviderRegistry.register(TerracottaRegistry.TINY_BOW_ITEM, new Identifier("pulling"),(stack, world, entity, seed) -> entity != null && entity.isUsingItem() && entity.getActiveItem() == stack ? 1.0F : 0.0F);
 
 		ModelPredicateProviderRegistry.register(TerracottaRegistry.TINY_BOW_ITEM, new Identifier("pull"), (stack, world, entity, seed) -> {

@@ -11,6 +11,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.pathing.Path;
+import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
@@ -40,22 +41,26 @@ public class ItemPickupGoal extends Goal {
 		searchBox = knightEntity.getBoundingBox().expand((double)searchRange,(double)searchRange,(double)searchRange);
 		List<ItemEntity> tempList = knightEntity.getWorld().getEntitiesByClass(ItemEntity.class, searchBox, knightEntity -> knightEntity != null);
 		if(tempList.size() > 0) {
-			for (int i = 0; i < tempList.size(); i++) {
+			for(int i = 0; i < tempList.size(); i++) {
 				ItemEntity item = tempList.get(i);
-				if (this.knightEntity.getVisibilityCache().canSee(item)) {
-					if (item.getStack().getItem() instanceof TinySwordItem) {
-						if (item.getStack().getItem() != TerracottaRegistry.TINY_BOW_ITEM)
-							if (this.knightEntity.prefersNewEquipment(item.getStack(), this.knightEntity.getEquippedStack(EquipmentSlot.MAINHAND)))
+				if(this.knightEntity.getVisibilityCache().canSee(item)) {
+					if(item.getStack().getItem() instanceof TinySwordItem) {
+						if(item.getStack().getItem() != TerracottaRegistry.TINY_BOW_ITEM)
+							if(this.knightEntity.prefersNewEquipment(item.getStack(), this.knightEntity.getEquippedStack(EquipmentSlot.MAINHAND)))
 								itemList.add(item);
 
-					} else if (item.getStack().getItem() instanceof TinyArmorItem) {
-						if (this.knightEntity.prefersNewEquipment(item.getStack(), this.knightEntity.getEquippedStack(((TinyArmorItem) item.getStack().getItem()).getPreferredSlot())))
+					} else if(item.getStack().getItem() instanceof TinyArmorItem) {
+						if(this.knightEntity.prefersNewEquipment(item.getStack(), this.knightEntity.getEquippedStack(((TinyArmorItem) item.getStack().getItem()).getPreferredSlot())))
 							itemList.add(item);
-					} else if (item.getStack().getItem() instanceof TinyBowItem && knightEntity.getEquippedStack(EquipmentSlot.MAINHAND).getItem() == Items.AIR) {
+					} else if(item.getStack().getItem() instanceof TinyBowItem && knightEntity.getEquippedStack(EquipmentSlot.MAINHAND).getItem() == Items.AIR) {
 						itemList.add(item);
-					} else if (item.getStack().getItem() == Items.TNT && knightEntity.findItemInventory(Items.TNT).getCount() < 3) {
+					} else if(item.getStack().getItem() == Items.TNT && knightEntity.findItemInventory(Items.TNT).getCount() < 3) {
 						itemList.add(item);
-					} else {
+					}
+					else if(item.getStack().getItem() instanceof EnchantedBookItem) {
+
+					}
+					else {
 						itemList.remove(item);
 					}
 				}

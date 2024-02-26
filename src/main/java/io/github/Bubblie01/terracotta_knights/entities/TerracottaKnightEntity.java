@@ -5,10 +5,10 @@ import io.github.Bubblie01.terracotta_knights.entities.ai.ItemPickupGoal;
 import io.github.Bubblie01.terracotta_knights.entities.ai.RunAwayFromEntityGoal;
 import io.github.Bubblie01.terracotta_knights.entities.ai.TerracottaKnightAttackGoal;
 import io.github.Bubblie01.terracotta_knights.items.*;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -24,6 +24,8 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtInt;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
@@ -48,7 +50,7 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 		super(entityType, world);
 	}
 
-	public static void registerClayKnightEntityAttributes() {
+	public static void registerTerracottaKnightEntityAttributes() {
 		FabricDefaultAttributeRegistry.register(TerracottaRegistry.TERRACOTTA_KNIGHT, TerracottaKnightEntity.createAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.5f).add(EntityAttributes.GENERIC_FOLLOW_RANGE, 5.0f).add(EntityAttributes.GENERIC_ATTACK_SPEED, 4.0f).add(EntityAttributes.GENERIC_ATTACK_DAMAGE,  0.5f).add(EntityAttributes.GENERIC_MAX_HEALTH, 12f));
 	}
 
@@ -131,10 +133,15 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 
 			if (equipmentSlot.isArmorSlot() && equipment.getCount() > 1) {
 				ItemStack itemStack2 = equipment.withCount(1);
-				this.equipStack(equipmentSlot, itemStack2);
+				this.equipLootStack(equipmentSlot, itemStack2);
 				return itemStack2;
 			}
 			else if(equipment.getItem() == TerracottaRegistry.TINY_BOW_ITEM && equipment.getCount() > 1) {
+				ItemStack itemStack2 = equipment.withCount(1);
+				this.equipLootStack(equipmentSlot, itemStack2);
+				return itemStack2;
+			}
+			else if(equipment.getItem() instanceof TinySwordItem) {
 				ItemStack itemStack2 = equipment.withCount(1);
 				this.equipLootStack(equipmentSlot, itemStack2);
 				return itemStack2;
@@ -150,7 +157,6 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 
 
 	}
-
 	public Entity getEntityTarget() {
 		return entityTarget;
 	}
@@ -177,9 +183,15 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 		super.onDeath(source);
 		if(this.getWorld().getGameRules().get(GameRules.DO_ENTITY_DROPS).get()) {
 			TerracottaKnightItem item = TerracottaRegistry.TERRACOTTA_KNIGHT_ITEM;
-			ItemStack stack = item.getDefaultStack();
-			stack.setCustomName(this.getCustomName());
-			item.setColor(stack, this.getColor());
+			ItemStack stack = item.getDefaultStack().copy();
+			if(this.hasCustomName())
+				stack.setCustomName(this.getCustomName());
+			if(this.getColor() != 10511680) {
+				item.setColor(stack, this.getColor());
+			}
+			else {
+				item.removeColor(stack);
+			}
 			this.dropStack(stack);
 		}
 		for(int i = 0; i < terracottaKnightInventory.size(); i++) {
@@ -279,7 +291,6 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 		this.dataTracker.startTracking(INVENTORY, 0);
 	}
 
-
 	public int getColor() {
 		return this.dataTracker.get(COLOR);
 	}
@@ -298,6 +309,7 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 
 	@Override
 	protected void mobTick() {
+
 		super.mobTick();
 	}
 
@@ -308,12 +320,10 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 
 		return super.writeNbt(nbt);
 	}
-
 	@Override
 	public void readNbt(NbtCompound nbt) {
-		if(nbt.getInt("Color") != 0) {
-			setColor(nbt.getInt("Color"));
-		}
+		if(this.getColor() != 0)
+			this.setColor(nbt.getInt("Color"));
 		if (nbt.contains("Inventory", NbtElement.LIST_TYPE)) {
 			terracottaKnightInventory.readNbtList(nbt.getList("Inventory", NbtElement.COMPOUND_TYPE));
 			this.dataTracker.set(INVENTORY, this.findItemInventory(Items.TNT).getCount());
@@ -370,9 +380,18 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 		if(itemCopy.getItem() instanceof TinyArmorItem) {
 			ItemStack itemStack = this.getEquippedStack(((TinyArmorItem) itemCopy.getItem()).getPreferredSlot());
 			this.dropStack(itemStack);
+			itemCopy.setCount(1);
 			this.equipLootStack(((TinyArmorItem) itemCopy.getItem()).getPreferredSlot(), itemCopy);
 			if(!player.isCreative())
 				item.decrement(1);
+		}
+
+		if(itemCopy.getItem() instanceof EnchantedBookItem) {
+			for(EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
+				if (equipmentSlot.getType() == EquipmentSlot.Type.ARMOR) {
+					EnchantedBookItem.getEnchantmentNbt(itemCopy);
+				}
+			}
 		}
 
 		//System.out.println(terracottaKnightInventory.stacks);

@@ -1,5 +1,6 @@
 package io.github.Bubblie01.terracotta_knights.items;
 
+import io.github.Bubblie01.terracotta_knights.mixin.ItemAccessorMixin;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,8 +17,9 @@ public class TinySwordItem extends SwordItem implements TerracottaItemFlag {
 	public TinySwordItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Item.Settings settings) {
 		super(toolMaterial, attackDamage, attackSpeed, settings);
 		this.attackDamage = (float)attackDamage + toolMaterial.getAttackDamage();
+		((ItemAccessorMixin)this).setMaxDamage(0);
+		((ItemAccessorMixin)this).setMaxCount(64);
 	}
-
 
 	@Override
 	public float getAttackDamage() {

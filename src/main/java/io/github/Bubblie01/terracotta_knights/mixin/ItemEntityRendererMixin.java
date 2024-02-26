@@ -1,6 +1,7 @@
 package io.github.Bubblie01.terracotta_knights.mixin;
 
 import io.github.Bubblie01.terracotta_knights.TerracottaRegistry;
+import io.github.Bubblie01.terracotta_knights.items.TerracottaItemFlag;
 import io.github.Bubblie01.terracotta_knights.items.TinySwordItem;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.ItemEntityRenderer;
@@ -24,9 +25,8 @@ public class ItemEntityRendererMixin {
 
 	@Inject(method = "render(Lnet/minecraft/entity/ItemEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/model/BakedModel;getTransformation()Lnet/minecraft/client/render/model/json/ModelTransformation;"))
 	private void terracotta$_scaleTinyItemEntity(ItemEntity itemEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
-		if(itemEntity.getStack().getItem() instanceof TinySwordItem || itemEntity.getStack().getItem() == TerracottaRegistry.TINY_BOW_ITEM || itemEntity.getStack().getItem() == TerracottaRegistry.TINY_ARROW_ITEM)
-		{
-			matrixStack.scale(0.9f, 0.9f, 0.9f);
+		if(itemEntity.getStack().getItem() instanceof TerracottaItemFlag) {
+			matrixStack.scale(0.94f, 0.94f, 0.94f);
 		}
 	}
 }
