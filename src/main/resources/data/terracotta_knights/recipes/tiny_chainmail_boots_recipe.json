@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": {
+      "item": "minecraft:chain"
+    }
+  },
+  "pattern": [
+    "  ",
+    "  ",
+    "X X"
+  ],
+  "result": {
+    "item": "terracotta_knights:tiny_chainmail_boots"
+  },
+  "show_notification": true
+}

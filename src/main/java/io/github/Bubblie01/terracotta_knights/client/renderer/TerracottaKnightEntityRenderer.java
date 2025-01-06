@@ -29,7 +29,7 @@ public class TerracottaKnightEntityRenderer extends BipedEntityRenderer<Terracot
 
 	public TerracottaKnightEntityRenderer(EntityRendererFactory.Context context, EntityModelLayer innerArmorLayer, EntityModelLayer outerArmorLayer) {
 		super(context, new TerracottaKnightEntityModel(context.getPart(EntityModelLayers.PLAYER), false), 0.3f);
-		this.addFeature(new ArmorFeatureRenderer(this, new BipedEntityModel(context.getPart(innerArmorLayer)), new BipedEntityModel(context.getPart(outerArmorLayer)), context.getModelManager()));
+		this.addFeature(new TinyArmorFeatureRenderer<>(this, new BipedEntityModel(context.getPart(innerArmorLayer)), new BipedEntityModel(context.getPart(outerArmorLayer)), context.getModelManager()));
 		this.addFeature(new TNTHeadFeatureRenderer<>(this, context.getItemRenderer()));
 		itemRenderer = context.getItemRenderer();
 	}

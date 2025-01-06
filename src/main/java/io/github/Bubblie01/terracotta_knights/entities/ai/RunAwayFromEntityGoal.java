@@ -26,14 +26,13 @@ public class RunAwayFromEntityGoal extends Goal {
 
 	public RunAwayFromEntityGoal(TerracottaKnightEntity knightEntity, float searchRange) {
 		this.knightEntity = knightEntity;
-		//this.distance = distance;
 		this.searchRange = searchRange;
 		this.setControls(EnumSet.of(Goal.Control.MOVE));
 	}
 
 	@Override
 	public boolean canStart() {
-		searchBox = knightEntity.getBoundingBox().expand((double)searchRange,(double)searchRange,(double)searchRange);
+		searchBox = knightEntity.getBoundingBox().expand(searchRange,searchRange,searchRange);
 		tntList = this.knightEntity.getWorld().getEntitiesByClass(TntEntity.class, searchBox, tntEntity -> tntEntity != null);
 		if(tntList != null) {
 			vec3d = NoPenaltyTargeting.find(this.knightEntity, 16, 7, this.knightEntity.getPos());

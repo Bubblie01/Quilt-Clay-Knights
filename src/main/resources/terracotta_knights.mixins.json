@@ -4,14 +4,16 @@
   "package": "io.github.Bubblie01.terracotta_knights.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AnvilScreenHandlerMixin",
+    "ClientPlayNetworkHandlerMixin",
     "EntityTypeAccessor",
+    "ItemAccessorMixin",
     "ItemEntityRendererMixin",
     "ItemRendererMixin",
     "MobEntityMixin",
-    "ClientPlayNetworkHandlerMixin",
+    "PlayerScreenHandlerMixin",
     "TntEntityMixin",
-    "ItemAccessorMixin",
-    "AnvilScreenHandlerMixin"
+    "HeadFeatureMixin"
   ],
   "client": [
     "TitleScreenMixin"

@@ -29,9 +29,9 @@ public class TerracottaHorseItem extends Item implements DyeableItem {
 		BlockHitResult blockHitResult = (BlockHitResult)hitResult;
 		EntityType<?> terracottaType = TerracottaRegistry.TERRACOTTA_HORSE;
 		if(!world.isClient) {
-			TerracottaHorseEntity knight = (TerracottaHorseEntity) terracottaType.create((ServerWorld) world, null, EntityType.createDefaultStackSpawnConfig((ServerWorld) world, itemStack, user), blockHitResult.getBlockPos(), SpawnReason.SPAWN_EGG, true, false);
-			knight.setColor(this.getColor(user.getStackInHand(hand)));
-			((ServerWorld)world).spawnEntityAndPassengers(knight);
+			TerracottaHorseEntity horse = (TerracottaHorseEntity) terracottaType.create((ServerWorld) world, null, EntityType.createDefaultStackSpawnConfig((ServerWorld) world, itemStack, user), blockHitResult.getBlockPos(), SpawnReason.SPAWN_EGG, true, false);
+			horse.setColor(this.getColor(user.getStackInHand(hand)));
+			((ServerWorld)world).spawnEntityAndPassengers(horse);
 		}
 		if(!user.isCreative())
 			itemStack.decrement(1);

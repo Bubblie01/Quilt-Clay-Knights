@@ -3,6 +3,7 @@ package io.github.Bubblie01.terracotta_knights.mixin;
 import io.github.Bubblie01.terracotta_knights.entities.TerracottaKnightEntity;
 import net.minecraft.entity.*;
 import net.minecraft.world.World;
+import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

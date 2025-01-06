@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 //Code Created by Bubblie01 Under MPL 2.0 License
-public class TinyArrowItem extends ArrowItem implements TerracottaItemFlag{
+public class TinyArrowItem extends ArrowItem implements TerracottaItemFlag {
 	public TinyArrowItem(Settings settings) {
 		super(settings);
 	}

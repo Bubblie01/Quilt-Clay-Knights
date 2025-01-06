@@ -3,7 +3,7 @@ package io.github.Bubblie01.terracotta_knights;
 import io.github.Bubblie01.terracotta_knights.entities.TerracottaHorseEntity;
 import io.github.Bubblie01.terracotta_knights.entities.TerracottaKnightEntity;
 import io.github.Bubblie01.terracotta_knights.items.TerracottaKnightItem;
-import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.dispenser.DispenserBlock;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;

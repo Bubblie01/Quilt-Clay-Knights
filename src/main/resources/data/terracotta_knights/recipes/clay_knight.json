@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": {
+      "item": "minecraft:clay_ball"
+    },
+    "Y": {
+      "item": "minecraft:soul_sand"
+    }
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "result": {
+    "count": 1,
+    "item": "terracotta_knights:clay_knight"
+  },
+  "show_notification": true
+}

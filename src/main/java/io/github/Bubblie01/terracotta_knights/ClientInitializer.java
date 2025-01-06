@@ -8,7 +8,7 @@ import io.github.Bubblie01.terracotta_knights.client.renderer.TinyPitchforkEntit
 import io.github.Bubblie01.terracotta_knights.entities.TerracottaKnightEntity;
 import io.github.Bubblie01.terracotta_knights.entities.TinyArrowEntity;
 import io.github.Bubblie01.terracotta_knights.entities.TinyPitchforkEntity;
-import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
+//import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
@@ -52,9 +52,12 @@ public class ClientInitializer implements ClientModInitializer {
 
 		EntityModelLayerRegistry.registerModelLayer(TinyPitchforkEntityModel.PITCHFORK, TinyPitchforkEntityModel::getTexturedModelData);
 
+		/*
 		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
 			out.accept(new ModelIdentifier(Main.MOD_ID, "tiny_diamond_pitchfork_item_model", "inventory"));
 		});
+
+		 */
 
 		TerracottaRegistry.registerColors();
 

@@ -2,6 +2,7 @@ package io.github.Bubblie01.terracotta_knights.entities;
 
 import io.github.Bubblie01.terracotta_knights.*;
 import io.github.Bubblie01.terracotta_knights.entities.ai.ItemPickupGoal;
+import io.github.Bubblie01.terracotta_knights.entities.ai.RideAndFindGoal;
 import io.github.Bubblie01.terracotta_knights.entities.ai.RunAwayFromEntityGoal;
 import io.github.Bubblie01.terracotta_knights.entities.ai.TerracottaKnightAttackGoal;
 import io.github.Bubblie01.terracotta_knights.items.*;
@@ -11,6 +12,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
+import net.minecraft.entity.ai.goal.WanderAroundGoal;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
@@ -34,6 +36,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 //Code Created by Bubblie01 Under MPL 2.0 License
@@ -57,16 +60,41 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	@Override
 	protected void initGoals() {
 		this.goalSelector.add(0, new TerracottaKnightAttackGoal(this, 30.0f, 2.0f));
-		this.goalSelector.add(1, new WanderAroundFarGoal(this,0.5f));
-		this.goalSelector.add(2, new LookAroundGoal(this));
-		this.goalSelector.add(1, new ItemPickupGoal(this, 7.0f));
-		this.goalSelector.add(2, new RunAwayFromEntityGoal(this, 15.0f));
+		this.goalSelector.add(2, new WanderAroundGoal(this,0.5f));
+		this.goalSelector.add(1, new LookAroundGoal(this));
+		this.goalSelector.add(3, new ItemPickupGoal(this, 7.0f));
+		this.goalSelector.add(4, new RunAwayFromEntityGoal(this, 15.0f));
+		this.goalSelector.add(2, new RideAndFindGoal(this, 7.0f));
 		super.initGoals();
 	}
 
 	@Override
 	public boolean canUseRangedWeapon(RangedWeaponItem weapon) {
 		return true;
+	}
+
+	@Override
+	public void onEquipItem(EquipmentSlot slot, ItemStack oldStack, ItemStack toEquip) {
+		boolean bl = toEquip.isEmpty() && oldStack.isEmpty();
+		if (!bl && !ItemStack.canCombine(oldStack, toEquip) && !this.firstUpdate) {
+			if (toEquip.getItem() instanceof TinyArmorItem) {
+				TinyArmorItem tinyArmorItem = (TinyArmorItem) toEquip.getItem();
+				if (tinyArmorItem != null && !this.isSpectator() && tinyArmorItem.getPreferredSlot() == slot) {
+					if (!this.getWorld().isClient() && !this.isSilent()) {
+						this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), tinyArmorItem.getEquipSound(), this.getSoundCategory(), 1.0F, 1.0F);
+					}
+
+					if (this.slotEmitsEquipEvent(slot)) {
+						this.emitGameEvent(GameEvent.EQUIP);
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean canEquip(ItemStack stack) {
+		return super.canEquip(stack);
 	}
 
 	@Override
@@ -117,8 +145,17 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	}
 
 	@Override
+	protected void processEquippedStack(ItemStack stack) {
+		super.processEquippedStack(stack);
+	}
+
+	@Override
 	public ItemStack tryEquip(ItemStack equipment) {
-		EquipmentSlot equipmentSlot = getPreferredEquipmentSlot(equipment);
+		EquipmentSlot equipmentSlot;
+		if(equipment.getItem() instanceof TinyArmorItem)
+			equipmentSlot = ((TinyArmorItem)equipment.getItem()).getPreferredSlot();
+		else
+			equipmentSlot = EquipmentSlot.MAINHAND;
 		ItemStack itemStack = this.getEquippedStack(equipmentSlot);
 		boolean bl = this.prefersNewEquipment(equipment, itemStack);
 		if(equipment.getItem() == Items.TNT) {
@@ -181,23 +218,38 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	@Override
 	public void onDeath(DamageSource source) {
 		super.onDeath(source);
+	}
+
+	@Override
+	protected void drop(DamageSource source) {
+		super.drop(source);
 		if(this.getWorld().getGameRules().get(GameRules.DO_ENTITY_DROPS).get()) {
 			TerracottaKnightItem item = TerracottaRegistry.TERRACOTTA_KNIGHT_ITEM;
 			ItemStack stack = item.getDefaultStack().copy();
 			if(this.hasCustomName())
 				stack.setCustomName(this.getCustomName());
-			if(this.getColor() != 10511680) {
-				item.setColor(stack, this.getColor());
-			}
-			else {
-				item.removeColor(stack);
-			}
+
+			item.setColor(stack, this.getColor());
 			this.dropStack(stack);
 		}
+	}
+
+	@Override
+	protected void dropInventory() {
 		for(int i = 0; i < terracottaKnightInventory.size(); i++) {
 			this.dropStack(terracottaKnightInventory.getStack(i));
 		}
+	}
 
+	@Override
+	protected void updatePostDeath() {
+		super.updatePostDeath();
+	}
+
+	@Nullable
+	@Override
+	public ItemEntity dropStack(ItemStack stack) {
+		return super.dropStack(stack);
 	}
 
 	public boolean prefersNewEquipment(ItemStack newStack, ItemStack oldStack) {
@@ -309,7 +361,6 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 
 	@Override
 	protected void mobTick() {
-
 		super.mobTick();
 	}
 
@@ -317,18 +368,15 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	public NbtCompound writeNbt(NbtCompound nbt) {
 		nbt.putInt("Color",this.dataTracker.get(COLOR));
 		nbt.put("Inventory", terracottaKnightInventory.toNbtList());
-
 		return super.writeNbt(nbt);
 	}
 	@Override
 	public void readNbt(NbtCompound nbt) {
-		if(this.getColor() != 0)
-			this.setColor(nbt.getInt("Color"));
+		this.setColor(nbt.getInt("Color"));
 		if (nbt.contains("Inventory", NbtElement.LIST_TYPE)) {
 			terracottaKnightInventory.readNbtList(nbt.getList("Inventory", NbtElement.COMPOUND_TYPE));
 			this.dataTracker.set(INVENTORY, this.findItemInventory(Items.TNT).getCount());
 		}
-
 		super.readNbt(nbt);
 	}
 
@@ -336,6 +384,7 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 	protected ActionResult interactMob(PlayerEntity player, Hand hand) {
 		ItemStack item = player.getStackInHand(hand);
 		ItemStack itemCopy = item.copy();
+		itemCopy.setCount(1);
 		if(itemCopy.getItem() instanceof DyeItem) {
 			dyeColor = ((DyeItem) itemCopy.getItem()).getColor();
 			this.dataTracker.set(COLOR, (dyeColor.getMapColor().color));
@@ -413,5 +462,8 @@ public class TerracottaKnightEntity extends PathAwareEntity {
 			this.getWorld().spawnEntity(persistentProjectileEntity);
 	}
 
-
+	@Override
+	public boolean hasVehicle() {
+		return super.hasVehicle();
+	}
 }

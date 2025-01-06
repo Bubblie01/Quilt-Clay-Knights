@@ -13,11 +13,11 @@ import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Random;
 
 //Code Created by Bubblie01 Under MPL 2.0 License
 public class TerracottaKnightAttackGoal extends Goal{
@@ -31,9 +31,11 @@ public class TerracottaKnightAttackGoal extends Goal{
 	private float searchRange;
 	private float attackRange;
 
-	private boolean sideways;
+	private boolean movingToLeft;
 
 	private boolean backwards = false;
+
+	private int tickCounter = 0;
 	public TerracottaKnightAttackGoal(TerracottaKnightEntity knightEntity, float searchRange, float attackRange) {
 		this.knightEntity = knightEntity;
 		this.searchRange = searchRange;
@@ -45,12 +47,13 @@ public class TerracottaKnightAttackGoal extends Goal{
 	@Override
 	public boolean canStart() {
 		searchBox = knightEntity.getBoundingBox().expand((double)searchRange,(double)searchRange,(double)searchRange);
+		//Redo this to be smaller and cleaner.
 		entityList = knightEntity.getWorld().getEntitiesByClass(Entity.class,searchBox, knightEntity -> knightEntity != null);
-		for(int i = 0; i<entityList.size(); i++) {
+		for(int i = 0; i < entityList.size(); i++) {
 			Entity entity = entityList.get(i);
 			if(entity instanceof TerracottaKnightEntity) {
 				int color = ((TerracottaKnightEntity) entity).getColor();
-				if(color != knightEntity.getColor()) {
+				if(color != knightEntity.getColor() && knightEntity.canSee(entity)) {
 					enemyList.add((TerracottaKnightEntity) entity);
 				}
 				else {
@@ -65,19 +68,24 @@ public class TerracottaKnightAttackGoal extends Goal{
 			return false;
 
 		if((enemyList != null && enemyList.size() != 0)) {
-			if((knightEntity.getTarget() == null || knightEntity.getTarget().isDead())) {
+			if((knightEntity.getTarget() == null) || knightEntity.getTarget().isDead()) {
 					int random = (int) (Math.random() * enemyList.size());
+					knightEntity.setTarget(enemyList.get(random));
+					/*
 					if(knightEntity.getVisibilityCache().canSee(enemyList.get(random)))
-						knightEntity.setTarget(enemyList.get(random));
 					else
 						return false;
+					 */
 
 			}
+
 			else {
-				int knightColor = knightEntity.getColor();
-				int enemyColor = ((TerracottaKnightEntity)knightEntity.getTarget()).getColor();
-				if(enemyColor == knightColor) {
-					knightEntity.setTarget(null);
+				if(knightEntity.getTarget() instanceof TerracottaKnightEntity) {
+					int knightColor = knightEntity.getColor();
+					int enemyColor = ((TerracottaKnightEntity) knightEntity.getTarget()).getColor();
+					if (enemyColor == knightColor) {
+						knightEntity.setTarget(null);
+					}
 				}
 			}
 			enemyList.clear();
@@ -100,7 +108,7 @@ public class TerracottaKnightAttackGoal extends Goal{
 		if(knightEntity.getAttacker() instanceof TerracottaKnightEntity && knightEntity.getColor() != ((TerracottaKnightEntity) knightEntity.getAttacker()).getColor() && knightEntity.getAttacker() != null) {
 			knightEntity.setTarget(knightEntity.getAttacker());
 		}
-		if(knightEntity.getTarget() != null) {
+		if(knightEntity.getTarget() != null && knightEntity.getTarget() instanceof TerracottaKnightEntity) {
 			path = knightEntity.getNavigation().findPathTo(knightEntity.getTarget(), 0);
 			//knightEntity.getLookControl().lookAt(knightEntity.getTarget());
 			//knightEntity.getNavigation().startMovingAlong(path, 0.5f);
@@ -114,30 +122,43 @@ public class TerracottaKnightAttackGoal extends Goal{
 				}
 				knightEntity.tryAttack(knightEntity.getTarget());
 				knightEntity.swingHand(Hand.MAIN_HAND);
-			} else if(knightEntity.isHolding(TerracottaRegistry.TINY_BOW_ITEM)) {
-				if(knightEntity.squaredDistanceTo(knightEntity.getTarget()) >= 10) {
-					knightEntity.setCurrentHand(ProjectileUtil.getHandPossiblyHolding(knightEntity, TerracottaRegistry.TINY_BOW_ITEM));
-					int useTime = knightEntity.getItemUseTime();
-					if (useTime >= 20) {
-						knightEntity.clearActiveItem();
-						knightEntity.rangedAttack(knightEntity.getTarget(), BowItem.getPullProgress(useTime));
-					}
-					knightEntity.getMoveControl().strafeTo(0.5f, 0.5f);
-					knightEntity.lookAtEntity(knightEntity.getTarget(), 30.0F, 30.0F);
 
-				} else if(knightEntity.squaredDistanceTo(knightEntity.getTarget()) <= 5) {
-					knightEntity.getMoveControl().strafeTo(-0.5f, -0.5f);
-					knightEntity.lookAtEntity(knightEntity.getTarget(), 30.0F, 30.0F);
+			} else if(knightEntity.isHolding(TerracottaRegistry.TINY_BOW_ITEM)) {
+				knightEntity.setCurrentHand(ProjectileUtil.getHandPossiblyHolding(knightEntity, TerracottaRegistry.TINY_BOW_ITEM));
+				int useTime = knightEntity.getItemUseTime();
+				if (useTime >= 20) {
+					knightEntity.clearActiveItem();
+					knightEntity.rangedAttack(knightEntity.getTarget(), BowItem.getPullProgress(useTime));
 				}
+				Random random = new Random();
+				if(tickCounter % 20 == 0) {
+					movingToLeft = random.nextBoolean();
+					backwards = random.nextBoolean();
+					tickCounter = 0;
+				}
+				knightEntity.getMoveControl().strafeTo(backwards ? -0.4F : 0.4f, movingToLeft ? 0.3F : -0.3F);
+				knightEntity.lookAtEntity(knightEntity.getTarget(), 30.0F, 30.0F);
+
+				knightEntity.getNavigation().startMovingAlong(path,0.4f);
+				if(knightEntity.squaredDistanceTo(knightEntity.getTarget()) <= 1) {
+					knightEntity.getMoveControl().strafeTo(-0.4f,0.0f);
+				}
+				else {
+					knightEntity.getNavigation().startMovingAlong(path,0.4f);
+				}
+
+
 			}
 			else {
 				knightEntity.getLookControl().lookAt(knightEntity.getTarget());
 				knightEntity.getNavigation().startMovingAlong(path, 0.5f);
 			}
 		}
+		tickCounter++;
 		super.tick();
 	}
 
+	/*
 	@Override
 	public boolean canStop() {
 		if(knightEntity.getTarget() != null) {
@@ -151,7 +172,12 @@ public class TerracottaKnightAttackGoal extends Goal{
 	public void stop() {
 		knightEntity.setAttacking(false);
 		knightEntity.getNavigation().stop();
+		knightEntity.setTarget(null);
 	}
+
+	 */
+
+
 
 	private double getAttackDistance(PathAwareEntity entity) {
 		return (double)(knightEntity.getWidth() * attackRange * knightEntity.getWidth() * attackRange + entity.getWidth());
